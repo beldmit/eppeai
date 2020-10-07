@@ -1,10 +1,17 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC5322 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5322.xml">
 <!ENTITY RFC5730 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml">
+<!ENTITY RFC5731 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5731.xml">
+<!ENTITY RFC5732 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5732.xml">
+<!ENTITY RFC5733 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5733.xml">
+<!ENTITY RFC5734 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5734.xml">
+<!ENTITY RFC5892 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5892.xml">
 <!ENTITY RFC6530 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6530.xml">
+<!ENTITY RFC8174 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
 ]>
-<rfc docName="draft-belyavskiy-epp-eai" category="std" updates="5730">
+<rfc docName="draft-belyavskiy-epp-eai-00" category="std" updates="5733">
   <?rfc strict="yes"?>
   <?rfc compact="yes"?>
   <?rfc subcompact="no"?>
@@ -36,17 +43,80 @@
 
   <middle>
   <section title="Introduction" ><t>
-	</t></section>
+   The updates to RFC 5730 <xref target="RFC5730" />described in this document provide alignment
+   with the 2008 specification for Internationalized Email Addresses (EAI)
+   and add support for internationalized email addresses in EPP protocol.
+	</t>
+	<t>
+	RFC 6530 <xref target="RFC6530" /> introduced the framework for Internationalized Email Addresses.
+	To make such addresses more widely accepted, the changes to various protocols need to be introduced.
+	</t>
+
+	<t>
+	The Extensible Provisioning Protocol (EPP) specified in RFC 5730 <xref target="RFC5730" />
+	is a base document for object management operations and an extensible framework that maps
+  protocol operations to objects. The specifics of various objects managed via EPP is described in separate documents,
+	RFC 5731 <xref target="RFC5731" />, RFC 5732 <xref target="RFC5732" />,
+	RFC 5733 <xref target="RFC5733" />, and RFC 5734 <xref target="RFC5734" />.
+	</t>
+	<t>
+  RFC 5733 <xref target="RFC5733" /> describes an Extensible Provisioning Protocol (EPP) mapping
+	for the provisioning and management of individual or organizational social information identifiers
+	(known as "contacts") stored in a shared central repository. This document is the only one refering
+	to Email address as a property of a managed object.
+	</t>
+  <section title="Terminology" >
+  <t> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
+  "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+  as described in BCP 14 <xref target="RFC2119" /> <xref target="RFC8174" /> when, and only when,
+  they appear in all capitals, as shown here.</t>
+
+  </section>
+
+</section>
+	<section title="Updates to RFC 5733">
+	<section title="Changes to Email Address specification">
+	<t>
+	Email address is specified in RFC 5733, section 2.6. The reference to the RFC 5322 <xref target="RFC5322"/> is replaced by a reference to RFC 6530.
+	</t>
+	</section>
+	<section title="Changes to Email Address XML schema">
+	<t>
+    The element named 'email' in XML schemas should get the type normalizedString instead of eppcom:minTokenType in terms of RFC 5733.
+	</t>
+	</section>
+	</section>
+	<section title="Security Considerations">
+	<t>
+	Registries SHOULD validate the validity of the domain names in the provided email addresses.
+	This can be done by validating all code points according to IDNA2008 <xref target="RFC5892" />.
+	</t>
+	</section>
+	<section title="IANA Considerations">
+	<t>This document has no IANA actions.</t>
+	</section>
+	<section title="Implementation Considerations">
+	<t>
+	Registries MAY apply extra limitation to the email address syntax (e.g. the addresses can be limited to Left-to-Right scripts). These limitations are out of scope of this document.
+	</t>
+	</section>
   </middle>
 
   <back>
   <references title="Normative References">
   &RFC2119;
-  &RFC5730;
+  &RFC5733;
   &RFC6530;
+  &RFC8174;
   </references>
-  <!--references title="Informative References">
-  </references-->
+  <references title="Informative References">
+  &RFC5322;
+  &RFC5730;
+  &RFC5731;
+  &RFC5732;
+  &RFC5734;
+  &RFC5892;
+  </references>
   </back>
 
   </rfc>
