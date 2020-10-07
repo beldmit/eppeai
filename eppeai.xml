@@ -37,7 +37,8 @@
   <abstract><t>
    This document permits usage of Internationalized Email Addresses in the EPP protocol.
   </t>
-
+	<t>TO BE REMOVED on turning to RFC: The document is edited in <eref target="https://github.com/beldmit/eppeai"> the dedicated github repo</eref>. Please send your submissions via GitHub.
+	</t>
   </abstract>
   </front>
 
