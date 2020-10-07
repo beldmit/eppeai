@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC2119 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC5730 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml">
+<!ENTITY RFC6530 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6530.xml">
+]>
+<rfc docName="draft-belyavskiy-epp-eai" category="std" updates="5730">
+  <?rfc strict="yes"?>
+  <?rfc compact="yes"?>
+  <?rfc subcompact="no"?>
+  <?rfc symrefs="yes"?>
+  <?rfc sortrefs="no"?>
+  <?rfc text-list-symbols="o*+-"?>
+  <?rfc toc="yes"?>
+  <front>
+  <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in EPP protocol</title>
+
+  <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
+  <organization>TCINET</organization>
+  <address><postal><street>8 marta st</street>
+  <city>Moscow</city>
+  <region/>
+  <country>Russian Federation</country>
+  </postal>
+  <phone>+7 916 262 5593</phone>
+  <email>beldmit@gmail.com</email>
+  </address>
+  </author>
+  <date month="October" year="2020" day="7"/>
+  <abstract><t>
+   This document permits usage of Internationalized Email Addresses in the EPP protocol.
+  </t>
+
+  </abstract>
+  </front>
+
+  <middle>
+  <section title="Introduction" ><t>
+	</t></section>
+  </middle>
+
+  <back>
+  <references title="Normative References">
+  &RFC2119;
+  &RFC5730;
+  &RFC6530;
+  </references>
+  <!--references title="Informative References">
+  </references-->
+  </back>
+
+  </rfc>
+
+
