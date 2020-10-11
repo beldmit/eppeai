@@ -1,0 +1,40 @@
+   <CODE BEGINS>
+   <?xml version="1.0" encoding="UTF-8"?>
+   <schema xmlns="http://www.w3.org/2001/XMLSchema"
+     xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+     xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+     xmlns:eppEAI="urn:ietf:params:xml:ns:epp:eppEAI-1.0"
+     targetNamespace="urn:ietf:params:xml:ns:epp:eppEAI-1.0"
+     elementFormDefault="qualified">
+     <!--
+     Import common element types.
+     -->
+     <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" />
+     <import namespace="urn:ietf:params:xml:ns:epp-1.0" />
+     <annotation>
+       <documentation>Use of Internationalized Email Addresses in
+Extensible Provisioning Protocol v1.0 Schema.</documentation>
+     </annotation>
+     <!-- Child elements found in EPP commands. -->
+     <element name="create" type="eppEAI:eppEAIType" />
+     <element name="update" type="eppEAI:eppEAIType" />
+     <!--
+       The eppEAIType definition
+      -->
+     <complexType name="eppEAIType">
+       <sequence>
+         <element name="email"
+           type="eppEAI:email" minOccurs="1" maxOccurs = "1" />
+       </sequence>
+     </complexType>
+     <simpleType name="eppEAI:email">
+       <restriction base="token" />
+     </simpleType>
+
+     <!--
+     Child response elements.
+     -->
+     <element name="infData" type="eppEAI:eppEAIType"/>
+   </schema>
+   <CODE ENDS>
+
