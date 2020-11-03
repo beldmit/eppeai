@@ -151,48 +151,47 @@ someaddress@example.com
 	</t>
 	<t>
 <figure><artwork><![CDATA[
-   C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   C:  <command>
-   C:    <create>
-   C:      <contact:create
-   C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-   C:        <contact:id>sh8013</contact:id>
-   C:        <contact:postalInfo type="int">
-   C:          <contact:name>John Doe</contact:name>
-   C:          <contact:org>Example Inc.</contact:org>
-   C:          <contact:addr>
-   C:            <contact:street>123 Example Dr.</contact:street>
-   C:            <contact:street>Suite 100</contact:street>
-   C:            <contact:city>Dulles</contact:city>
-   C:            <contact:sp>VA</contact:sp>
-   C:            <contact:pc>20166-6503</contact:pc>
-   C:            <contact:cc>US</contact:cc>
-   C:          </contact:addr>
-   C:        </contact:postalInfo>
-   C:        <contact:voice x="1234">+1.7035555555</contact:voice>
-   C:        <contact:fax>+1.7035555556</contact:fax>
-   C:        <contact:email>[EAI-DUMMY]</contact:email>
-   C:        <contact:authInfo>
-   C:          <contact:pw>2fooBAR</contact:pw>
-   C:        </contact:authInfo>
-   C:        <contact:disclose flag="0">
-   C:          <contact:voice/>
-   C:          <contact:email/>
-   C:        </contact:disclose>
-   C:      </contact:create>
-   C:    <extension>
-   C:      <eppEAI:eppEAI
-   C:        xmlns:eppEAI=
-   C:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
-   C:        <eppEAI:email>someaddress@example.com</eppEAI:email>
-   C:      </eppEAI:eppEAI>
-   C:    </extension>
-   C:    </create>
-   C:    <clTRID>ABC-12345</clTRID>
-   C:  </command>
-   C:</epp>
-]]></artwork></figure>
+  C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+  C:  <command>
+  C:    <create>
+  C:      <contact:create
+  C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+  C:        <contact:id>sh8013</contact:id>
+  C:        <contact:postalInfo type="int">
+  C:          <contact:name>John Doe</contact:name>
+  C:          <contact:org>Example Inc.</contact:org>
+  C:          <contact:addr>
+  C:            <contact:street>123 Example Dr.</contact:street>
+  C:            <contact:street>Suite 100</contact:street>
+  C:            <contact:city>Dulles</contact:city>
+  C:            <contact:sp>VA</contact:sp>
+  C:            <contact:pc>20166-6503</contact:pc>
+  C:            <contact:cc>US</contact:cc>
+  C:          </contact:addr>
+  C:        </contact:postalInfo>
+  C:        <contact:voice x="1234">+1.7035555555</contact:voice>
+  C:        <contact:fax>+1.7035555556</contact:fax>
+  C:        <contact:email>[EAI-DUMMY]</contact:email>
+  C:        <contact:authInfo>
+  C:          <contact:pw>2fooBAR</contact:pw>
+  C:        </contact:authInfo>
+  C:        <contact:disclose flag="0">
+  C:          <contact:voice/>
+  C:          <contact:email/>
+  C:        </contact:disclose>
+  C:      </contact:create>
+  C:    </create>
+  C:    <extension>
+  C:      <eppEAI:eppEAI
+  C:        xmlns:eppEAI=
+  C:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
+  C:        <eppEAI:email>someaddress@example.com</eppEAI:email>
+  C:      </eppEAI:eppEAI>
+  C:    </extension>
+  C:    <clTRID>ABC-12345</clTRID>
+  C:  </command>
+  C:</epp>]]></artwork></figure>
 	</t>
 	</section>
 	<section title="EPP &lt;update&gt; command">
@@ -209,27 +208,28 @@ someaddress@example.com
 	</t>
 	<t>
 <figure><artwork><![CDATA[
-   C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   C:  <command>
-   C:    <update>
-   C:      <contact:update
-   C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-   C:        <contact:id>sh8013</contact:id>
-   C:        <contact:email>[EAI-DUMMY]</contact:email>
-   C:      </contact:update>
-   C:    <extension>
-   C:      <eppEAI:eppEAI
-   C:        xmlns:eppEAI=
-   C:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
-   C:        <eppEAI:email>someaddress@example.net</eppEAI:email>
-   C:      </eppEAI:eppEAI>
-   C:    </extension>
-   C:    </update>
-   C:    <clTRID>ABC-12345</clTRID>
-   C:  </command>
-   C:</epp>
-]]></artwork></figure>
+  C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+  C:  <command>
+  C:    <update>
+  C:      <contact:update
+  C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+  C:        <contact:id>sh8013</contact:id>
+  C:        <contact:chg>
+  C:          <contact:email>[EAI-DUMMY]</contact:email>
+  C:        </contact:chg>
+  C:      </contact:update>
+  C:    </update>
+  C:    <extension>
+  C:      <eppEAI:eppEAI
+  C:        xmlns:eppEAI=
+  C:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
+  C:        <eppEAI:email>someaddress@example.net</eppEAI:email>
+  C:      </eppEAI:eppEAI>
+  C:    </extension>
+  C:    <clTRID>ABC-12345</clTRID>
+  C:  </command>
+  C:</epp>]]></artwork></figure>
 	</t>
 	</section>
 	<section title="EPP &lt;info&gt; command">
@@ -248,63 +248,62 @@ value for the email attribute and the corresponding email value in the
 	</t>
 	<t>
 <figure><artwork><![CDATA[
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <resData>
-   S:      <contact:infData
-   S:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-   S:        <contact:id>sh8013</contact:id>
-   S:        <contact:roid>SH8013-REP</contact:roid>
-   S:        <contact:status s="linked"/>
-   S:        <contact:status s="clientDeleteProhibited"/>
-   S:        <contact:postalInfo type="int">
-   S:          <contact:name>John Doe</contact:name>
-   S:          <contact:org>Example Inc.</contact:org>
-   S:          <contact:addr>
-   S:            <contact:street>123 Example Dr.</contact:street>
-   S:            <contact:street>Suite 100</contact:street>
-   S:            <contact:city>Dulles</contact:city>
-   S:            <contact:sp>VA</contact:sp>
-   S:            <contact:pc>20166-6503</contact:pc>
-   S:            <contact:cc>US</contact:cc>
-   S:          </contact:addr>
-   S:        </contact:postalInfo>
-   S:        <contact:voice x="1234">+1.7035555555</contact:voice>
-   S:        <contact:fax>+1.7035555556</contact:fax>
-   S:        <contact:email>jdoe@example.com</contact:email>
-   S:        <contact:clID>ClientY</contact:clID>
-   S:        <contact:crID>ClientX</contact:crID>
-   S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
-   S:        <contact:upID>ClientX</contact:upID>
-   S:        <contact:upDate>1999-12-03T09:00:00.0Z</contact:upDate>
-   S:        <contact:trDate>2000-04-08T09:00:00.0Z</contact:trDate>
-   S:        <contact:authInfo>
-   S:          <contact:pw>2fooBAR</contact:pw>
-   S:        </contact:authInfo>
-   S:        <contact:disclose flag="0">
-   S:          <contact:voice/>
-   S:          <contact:email/>
-   S:        </contact:disclose>
-   S:      </contact:infData>
-   S:    </resData>
-   S:    <extension>
-   S:      <eppEAI:eppEAI
-   S:        xmlns:eppEAI=
-   S:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
-   S:        <eppEAI:email>someaddress@example.com</eppEAI:email>
-   S:      </eppEAI:eppEAI>
-   S:    </extension>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>54322-XYZ</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
-]]></artwork></figure>
+  S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+  S:  <response>
+  S:    <result code="1000">
+  S:      <msg>Command completed successfully</msg>
+  S:    </result>
+  S:    <resData>
+  S:      <contact:infData
+  S:        xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+  S:        <contact:id>sh8013</contact:id>
+  S:        <contact:roid>SH8013-REP</contact:roid>
+  S:        <contact:status s="linked"/>
+  S:        <contact:status s="clientDeleteProhibited"/>
+  S:        <contact:postalInfo type="int">
+  S:          <contact:name>John Doe</contact:name>
+  S:          <contact:org>Example Inc.</contact:org>
+  S:          <contact:addr>
+  S:            <contact:street>123 Example Dr.</contact:street>
+  S:            <contact:street>Suite 100</contact:street>
+  S:            <contact:city>Dulles</contact:city>
+  S:            <contact:sp>VA</contact:sp>
+  S:            <contact:pc>20166-6503</contact:pc>
+  S:            <contact:cc>US</contact:cc>
+  S:          </contact:addr>
+  S:        </contact:postalInfo>
+  S:        <contact:voice x="1234">+1.7035555555</contact:voice>
+  S:        <contact:fax>+1.7035555556</contact:fax>
+  S:        <contact:email>jdoe@example.com</contact:email>
+  S:        <contact:clID>ClientY</contact:clID>
+  S:        <contact:crID>ClientX</contact:crID>
+  S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
+  S:        <contact:upID>ClientX</contact:upID>
+  S:        <contact:upDate>1999-12-03T09:00:00.0Z</contact:upDate>
+  S:        <contact:trDate>2000-04-08T09:00:00.0Z</contact:trDate>
+  S:        <contact:authInfo>
+  S:          <contact:pw>2fooBAR</contact:pw>
+  S:        </contact:authInfo>
+  S:        <contact:disclose flag="0">
+  S:          <contact:voice/>
+  S:          <contact:email/>
+  S:        </contact:disclose>
+  S:      </contact:infData>
+  S:    </resData>
+  S:    <extension>
+  S:      <eppEAI:eppEAI
+  S:        xmlns:eppEAI=
+  S:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
+  S:        <eppEAI:email>someaddress@example.com</eppEAI:email>
+  S:      </eppEAI:eppEAI>
+  S:    </extension>
+  S:    <trID>
+  S:      <clTRID>ABC-12345</clTRID>
+  S:      <svTRID>54322-XYZ</svTRID>
+  S:    </trID>
+  S:  </response>
+  S:</epp>]]></artwork></figure>
 	</t>
 	</section>
 	</section>
@@ -321,43 +320,36 @@ value for the email attribute and the corresponding email value in the
 <t>
 <figure><artwork><![CDATA[
    <CODE BEGINS>
-   <?xml version="1.0" encoding="UTF-8"?>
-   <schema xmlns="http://www.w3.org/2001/XMLSchema"
-     xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
-     xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
-     xmlns:eppEAI="urn:ietf:params:xml:ns:epp:eppEAI-1.0"
-     targetNamespace="urn:ietf:params:xml:ns:epp:eppEAI-1.0"
-     elementFormDefault="qualified">
-     <!--
-     Import common element types.
-     -->
-     <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" />
-     <import namespace="urn:ietf:params:xml:ns:epp-1.0" />
-     <annotation>
-       <documentation>Use of Internationalized Email Addresses in
-Extensible Provisioning Protocol v1.0 Schema.</documentation>
-     </annotation>
-     <!-- Child elements found in EPP commands. -->
-     <element name="create" type="eppEAI:eppEAIType" />
-     <element name="update" type="eppEAI:eppEAIType" />
-     <!--
-       The eppEAIType definition
-      -->
-     <complexType name="eppEAIType">
-       <sequence>
-         <element name="email"
-           type="eppEAI:email" minOccurs="1" maxOccurs = "1" />
-       </sequence>
-     </complexType>
-     <simpleType name="eppEAI:email">
-       <restriction base="token" />
-     </simpleType>
+     <?xml version="1.0" encoding="UTF-8"?>
+     <schema xmlns="http://www.w3.org/2001/XMLSchema"
+       xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+       xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+       xmlns:eppEAI="urn:ietf:params:xml:ns:epp:eppEAI-1.0"
+       targetNamespace="urn:ietf:params:xml:ns:epp:eppEAI-1.0"
+       elementFormDefault="qualified">
+       <!--
+       Import common element types.
+       -->
+       <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" />
+       <import namespace="urn:ietf:params:xml:ns:epp-1.0" />
+       <annotation>
+         <documentation>
+           Use of Internationalized Email Addresses in
+           Extensible Provisioning Protocol v1.0 Schema.
+         </documentation>
+       </annotation>
 
-     <!--
-     Child response elements.
-     -->
-     <element name="infData" type="eppEAI:eppEAIType"/>
-   </schema>
+       <!-- EAI extension element -->
+       <element name="eppEAI" type="eppEAI:eppEAIType" />
+
+       <complexType name="eppEAIType">
+         <sequence>
+           <element name="email"
+             type="eppcom:minTokenType"/>
+         </sequence>
+       </complexType>
+
+     </schema>
    <CODE ENDS>
 ]]></artwork></figure>
 	</t>
@@ -446,5 +438,3 @@ Extensible Provisioning Protocol v1.0 Schema.</documentation>
   </back>
 
   </rfc>
-
-
