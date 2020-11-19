@@ -1,41 +1,26 @@
 <?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY RFC2119 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY RFC3688 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml">
-<!ENTITY RFC3735 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3735.xml">
-<!ENTITY RFC5730 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml">
-<!ENTITY RFC5731 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5731.xml">
-<!ENTITY RFC5732 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5732.xml">
-<!ENTITY RFC5733 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5733.xml">
-<!ENTITY RFC5734 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5734.xml">
-<!ENTITY RFC5892 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5892.xml">
-<!ENTITY RFC6530 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6530.xml">
-<!ENTITY RFC7451 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7451.xml">
-<!ENTITY RFC8174 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
-]>
-<rfc docName="draft-belyavskiy-epp-eai-01" category="std">
-  <?rfc strict="yes"?>
-  <?rfc compact="yes"?>
-  <?rfc subcompact="no"?>
-  <?rfc symrefs="yes"?>
-  <?rfc sortrefs="no"?>
-  <?rfc text-list-symbols="o*+-"?>
-  <?rfc toc="yes"?>
+<!DOCTYPE rfc SYSTEM "rfc2629-xhtml.ent">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-belyavskiy-epp-eai-02"
+  category="std" ipr="trust200902" obsoletes="" updates=""
+  submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
+  tocInclude="true" version="3" consensus="true">
+  <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
-  <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in EPP protocol</title>
-
-  <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
-  <address><postal>
-	<street>8 marta st.</street>
-  <city>Moscow</city>
-  <region/>
-  <country>Russian Federation</country>
-  </postal>
-  <phone>+7 916 262 5593</phone>
-  <email>beldmit@gmail.com</email>
-  </address>
-  </author>
-<author fullname="James Gould" surname="Gould">
+    <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in EPP protocol</title>
+    <seriesInfo name="Internet-Draft" value="draft-belyavskiy-epp-eai-02"/>
+    <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
+      <address>
+        <postal>
+          <street>8 marta st.</street>
+	  <city>Moscow</city>
+	  <code>127083</code>
+          <country>Russian Federation</country>
+        </postal>
+        <phone>+7 916 262 5593</phone>
+        <email>beldmit@gmail.com</email>
+      </address>
+    </author>
+    <author fullname="James Gould" surname="Gould">
       <organization>VeriSign, Inc.</organization>
       <address>
         <postal>
@@ -49,365 +34,404 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-  <date month="October" year="2020" day="11"/>
-  <abstract><t>
+    <date month="November" year="2020" day="18"/>
+    <abstract>
+      <t>
    This document permits usage of Internationalized Email Addresses in the EPP protocol.
 	 The Extensible Provisioning Protocol (EPP), being developed before appearing the standards
 	 for Internationalized Email Addresses (EAI), does not support such email addressed.
-	 This document describes an EPP extension that allows EAI addresses to be used in contact mapping in the EPP protocol.
-  </t>
-	<t>TO BE REMOVED on turning to RFC: The document is edited in <eref target="https://github.com/beldmit/eppeai"> the dedicated github repo</eref>. Please send your submissions via GitHub.
-	</t>
-  </abstract>
+	 This document describes an EPP extension that allows EAI addresses to be used with an EPP object mapping
+   like the EPP contact mapping.
+      </t>
+      <t>TO BE REMOVED on turning to RFC: The document is edited in <eref target="https://github.com/beldmit/eppeai"> the dedicated github repo</eref>. Please send your submissions via GitHub.
+      </t>
+    </abstract>
   </front>
-
   <middle>
-  <section title="Introduction" >
-	<t>
-	RFC 6530 <xref target="RFC6530" /> introduced the framework for Internationalized Email Addresses.
+    <section numbered="true" toc="default">
+      <name>Introduction</name>
+      <t>
+	RFC 6530 <xref target="RFC6530" format="default"/> introduced the framework for Internationalized Email Addresses.
 	To make such addresses more widely accepted, the changes to various protocols need to be introduced.
-	</t>
-	<t>
+      </t>
+      <t>
    This document describes an Extensible Provisioning Protocol (EPP)
    extension for using the Email Addresses Internationalized (EAI)
-	 in contact object mapping descibed in RFC 5733 <xref target="RFC5733"/>.
-	</t>
-
-	<t>
-	The Extensible Provisioning Protocol (EPP) specified in RFC 5730 <xref target="RFC5730" />
+	 in an extension to EPP object mappings like the <xref target="RFC5733" format="default">EPP contact mapping</xref>.
+   The extension can be applied to any EPP object mapping that uses an email address, where
+   the <xref target="RFC5733" format="default">EPP contact mapping</xref> is used in the examples.
+      </t>
+      <t>
+	The Extensible Provisioning Protocol (EPP) specified in RFC 5730 <xref target="RFC5730" format="default"/>
 	is a base document for object management operations and an extensible framework that maps
-  protocol operations to objects. The specifics of various objects managed via EPP is described in separate documents,
-	RFC 5731 <xref target="RFC5731" />, RFC 5732 <xref target="RFC5732" />,
-	RFC 5733 <xref target="RFC5733" />, and RFC 5734 <xref target="RFC5734" />.
-	</t>
-	<t>
-  RFC 5733 <xref target="RFC5733" /> describes an Extensible Provisioning Protocol (EPP) mapping
-	for the provisioning and management of individual or organizational social information identifiers
-	(known as "contacts") stored in a shared central repository. This document is the only one refering
-	to Email address as a property of a managed object.
-	</t>
-	<t>
-	RFC 3735 <xref target="RFC3735" /> provides a guideline to extend the EPP protocol for various purposes.
-	</t>
-  <section title="Conventions Used in This Document" >
-  <t> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
+  protocol operations to objects. The specifics of various objects managed via EPP is described in separate documents.
+  This document is only referring to an email address as a property of a managed object, such as
+  the &lt;contact:email&gt; element in the <xref target="RFC5733" format="default">EPP contact mapping</xref> or
+  the &lt;org:email&gt; element in the <xref target="RFC8543" format="default">EPP organization mapping</xref>.
+      </t>
+      <t>
+	<xref target="RFC3735" format="default">RFC 3735</xref> provides a guideline to extend the EPP protocol for various purposes.  This extension
+  represents a Command-Response Extension.
+      </t>
+      <section numbered="true" toc="default">
+        <name>Conventions Used in This Document</name>
+        <t> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
   "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
-  as described in BCP 14 <xref target="RFC2119" /> <xref target="RFC8174" /> when, and only when,
+  as described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/> when, and only when,
   they appear in all capitals, as shown here.</t>
-
-	<t>
+        <t>
    In examples, "C:" represents lines sent by a protocol client and "S:"
    represents lines returned by a protocol server.  In examples,
    indentation and whitespace are provided only to illustrate element
    relationships and are not a required feature of this protocol.
-	</t>
-
-	<t>
-	"eppEAI-1.0" is used as an abbreviation for "urn:ietf:params:xml:ns:epp:eppEAI-1.0".
-   The XML namespace prefix "eppEAI" is used, but implementations MUST NOT depend on it.
+        </t>
+        <t>
+	"eai-0.1" is used as an abbreviation for "urn:ietf:params:xml:ns:epp:eai-0.1".
+   The XML namespace prefix "eai" is used, but implementations <bcp14>MUST NOT</bcp14> depend on it.
    Instead, they are to employ a proper namespace-aware XML parser and
    serializer to interpret and output the XML documents.
-	</t>
-
-  </section>
-
-  </section>
-	<section title="Migrating to Newer Versions of This Extension">
-	<t>
-   Servers that implement this extension SHOULD provide a way for
+        </t>
+      </section>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Migrating to Newer Versions of This Extension</name>
+      <t>
+   Servers that implement this extension <bcp14>SHOULD</bcp14> provide a way for
    clients to progressively update their implementations when a new
    version of the extension is deployed.  A newer version of the
    extension is expected to use an XML namespace with a higher version
    number than the prior versions.
-	</t>
-	</section>
-
-	<section title="Object Attributes">
-	<t>
-	This extension adds additional elements to RFC 5733 commands and adds a predefined value to indicate usage of the EAI in the object data. Only those new elements and values are described here.
-	</t>
-	<section title="EAI email address">
-	<t>
-	An address used by &lt;eppEAI:email&gt; element represents an email address matching the specification in RFC 6530 <xref target="RFC6530" />.
-	</t>
-	<t>
-	Example EAI email address:
-	</t>
-	<t>
-<figure><artwork><![CDATA[
-<eppEAI:email>
-someaddress@example.com
-</eppEAI:email>
+      </t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Object Attributes</name>
+      <t>
+    This extension adds additional elements to EPP object mappings like the <xref target="RFC5733" format="default">EPP contact mapping</xref>. Only those new elements
+        are described here.
+      </t>
+      <section anchor="eaiExtElement" numbered="true" toc="default">
+        <name>&lt;eai:eai&gt; Extension Element</name>
+        <t>The &lt;eai:eai&gt; element can be added to a command or response to override an email element using the "[EAI-ADDRESS]" value,
+          as described in <xref target="eaiAddressValue"/>.  The &lt;eai:eai&gt; element element contains the following child elements:</t>
+          <dl newline="false" spacing="compact" indent="4">
+            <dt>&lt;eai:email&gt;:</dt>
+            <dd>Contains an email address matching the specification in <xref target="RFC6530" format="default">RFC 6530</xref>.</dd>
+          </dl>
+        <t>Example &lt;eai:eai&gt; element containing an EAI email address:
+        </t>
+        <artwork name="" type="" align="left" alt=""><![CDATA[
+<eai:eai "urn:ietf:params:xml:ns:epp:eai-0.1">
+  <eai:email>someaddress@example.com</eai:email>
+</eai:eai>
 ]]></artwork>
-  </figure>
-	</t>
-	</section>
-	<section title="[EAI-DUMMY] email value">
-	<t>
-    When the RFC 5733 &lt;email&gt; element contains the predefined value of [EAI-DUMMY], the &lt;eppEAI:email&gt; extension MUST be present. The value in the &lt;eppEAI:email&gt; MUST be used as the contact object email attribute.
-	</t>
-	</section>
-	</section>
-	<section title="Email Address specification">
-	<t>
-	Email address syntax is defined in in RFC 6530 <xref target="RFC6530" />.  This mapping does not
-  prescribe minimum or maximum lengths for character strings used to
-  represent email addresses.
-	</t>
-	</section>
-	<section title="EPP commands mapping">
-	<t>
-	The proposed extension modifies mapping for the &lt;contact:create&gt;, &lt;contact:update&gt;, and &lt;contact:info&gt; commands.
-	</t>
-	<section title="EPP &lt;create&gt; command">
-	<t>
-   Example &lt;create&gt; command:
-	</t>
-	<t>
-<figure><artwork><![CDATA[
-  C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-  C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-  C:  <command>
-  C:    <create>
-  C:      <contact:create
-  C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-  C:        <contact:id>sh8013</contact:id>
-  C:        <contact:postalInfo type="int">
-  C:          <contact:name>John Doe</contact:name>
-  C:          <contact:org>Example Inc.</contact:org>
-  C:          <contact:addr>
-  C:            <contact:street>123 Example Dr.</contact:street>
-  C:            <contact:street>Suite 100</contact:street>
-  C:            <contact:city>Dulles</contact:city>
-  C:            <contact:sp>VA</contact:sp>
-  C:            <contact:pc>20166-6503</contact:pc>
-  C:            <contact:cc>US</contact:cc>
-  C:          </contact:addr>
-  C:        </contact:postalInfo>
-  C:        <contact:voice x="1234">+1.7035555555</contact:voice>
-  C:        <contact:fax>+1.7035555556</contact:fax>
-  C:        <contact:email>[EAI-DUMMY]</contact:email>
-  C:        <contact:authInfo>
-  C:          <contact:pw>2fooBAR</contact:pw>
-  C:        </contact:authInfo>
-  C:        <contact:disclose flag="0">
-  C:          <contact:voice/>
-  C:          <contact:email/>
-  C:        </contact:disclose>
-  C:      </contact:create>
-  C:    </create>
-  C:    <extension>
-  C:      <eppEAI:eppEAI
-  C:        xmlns:eppEAI=
-  C:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
-  C:        <eppEAI:email>someaddress@example.com</eppEAI:email>
-  C:      </eppEAI:eppEAI>
-  C:    </extension>
-  C:    <clTRID>ABC-12345</clTRID>
-  C:  </command>
-  C:</epp>]]></artwork></figure>
-	</t>
-	</section>
-	<section title="EPP &lt;update&gt; command">
-  <t>
-  When executing the &lt;update&gt; command, there are multiple possibilities of changing the email address.
-  </t>
-  <t><list>
-  <t>No mentioning of &lt;email&gt; element means the email address of the contact is not changed. The &lt;eppEAI&gt; extension MUST not be present.</t>
-  <t>When the [EAI-DUMMY] of &lt;email&gt; is used, the &lt;eppEAI&gt; extension MUST be present and contain a valid email address.</t>
-  <t>When the value not equal to [EAI-DUMMY] of &lt;email&gt; is used, the &lt;eppEAI&gt; extension MUST NOT be present.</t>
-  </list></t>
-	<t>
-   Example &lt;update&gt; command:
-	</t>
-	<t>
-<figure><artwork><![CDATA[
-  C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-  C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-  C:  <command>
-  C:    <update>
-  C:      <contact:update
-  C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-  C:        <contact:id>sh8013</contact:id>
-  C:        <contact:chg>
-  C:          <contact:email>[EAI-DUMMY]</contact:email>
-  C:        </contact:chg>
-  C:      </contact:update>
-  C:    </update>
-  C:    <extension>
-  C:      <eppEAI:eppEAI
-  C:        xmlns:eppEAI=
-  C:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
-  C:        <eppEAI:email>someaddress@example.net</eppEAI:email>
-  C:      </eppEAI:eppEAI>
-  C:    </extension>
-  C:    <clTRID>ABC-12345</clTRID>
-  C:  </command>
-  C:</epp>]]></artwork></figure>
-	</t>
-	</section>
-	<section title="EPP &lt;info&gt; command">
-  <t>
-    When the requested contact object was created using the arbitrary
-value for the email attribute, the server should return that value for the email attribute.
-  </t>
-  <t>
-    When the requested contact object was created using the [EAI-DUMMY]
-value for the email attribute, the server should return the [EAI-DUMMY]
-value for the email attribute and the corresponding email value in the
-&lt;eppEAI:email&lt; attribute.
-  </t>
-	<t>
-   Example &lt;info&gt; command for the authorized client:
-	</t>
-	<t>
-<figure><artwork><![CDATA[
-  S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-  S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-  S:  <response>
-  S:    <result code="1000">
-  S:      <msg>Command completed successfully</msg>
-  S:    </result>
-  S:    <resData>
-  S:      <contact:infData
-  S:        xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-  S:        <contact:id>sh8013</contact:id>
-  S:        <contact:roid>SH8013-REP</contact:roid>
-  S:        <contact:status s="linked"/>
-  S:        <contact:status s="clientDeleteProhibited"/>
-  S:        <contact:postalInfo type="int">
-  S:          <contact:name>John Doe</contact:name>
-  S:          <contact:org>Example Inc.</contact:org>
-  S:          <contact:addr>
-  S:            <contact:street>123 Example Dr.</contact:street>
-  S:            <contact:street>Suite 100</contact:street>
-  S:            <contact:city>Dulles</contact:city>
-  S:            <contact:sp>VA</contact:sp>
-  S:            <contact:pc>20166-6503</contact:pc>
-  S:            <contact:cc>US</contact:cc>
-  S:          </contact:addr>
-  S:        </contact:postalInfo>
-  S:        <contact:voice x="1234">+1.7035555555</contact:voice>
-  S:        <contact:fax>+1.7035555556</contact:fax>
-  S:        <contact:email>jdoe@example.com</contact:email>
-  S:        <contact:clID>ClientY</contact:clID>
-  S:        <contact:crID>ClientX</contact:crID>
-  S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
-  S:        <contact:upID>ClientX</contact:upID>
-  S:        <contact:upDate>1999-12-03T09:00:00.0Z</contact:upDate>
-  S:        <contact:trDate>2000-04-08T09:00:00.0Z</contact:trDate>
-  S:        <contact:authInfo>
-  S:          <contact:pw>2fooBAR</contact:pw>
-  S:        </contact:authInfo>
-  S:        <contact:disclose flag="0">
-  S:          <contact:voice/>
-  S:          <contact:email/>
-  S:        </contact:disclose>
-  S:      </contact:infData>
-  S:    </resData>
-  S:    <extension>
-  S:      <eppEAI:eppEAI
-  S:        xmlns:eppEAI=
-  S:          "urn:ietf:params:xml:ns:epp:eppEAI-1.0">
-  S:        <eppEAI:email>someaddress@example.com</eppEAI:email>
-  S:      </eppEAI:eppEAI>
-  S:    </extension>
-  S:    <trID>
-  S:      <clTRID>ABC-12345</clTRID>
-  S:      <svTRID>54322-XYZ</svTRID>
-  S:    </trID>
-  S:  </response>
-  S:</epp>]]></artwork></figure>
-	</t>
-	</section>
-	</section>
-	<section title="Formal syntax">
-   <t>The Internationalized Email Addresses in EPP protocol schema is presented here.</t>
+      </section>
+      <section anchor="eaiAddressValue" numbered="true" toc="default">
+        <name>[EAI-ADDRESS] Email Value</name>
+        <t>
+    When an EPP object mapping email element contains the predefined value of "[EAI-ADDRESS]", the &lt;eai:email&gt; element overrides the EPP object mapping email element,
+    which is a constant value for the server to use the &lt;eai:email&gt; element for the value.  The "[EAI-ADDRESS]" predefined string <bcp14>MUST</bcp14> be supported
+    by the server for the client to explicitly indicate to the server whether to use &lt;eai:email&gt; element in place of the EPP object email element.
+    The server <bcp14>MUST NOT</bcp14> allow the client to set the EPP object mapping email element to the value "[EAI-ADDRESS]".
+        </t>
+      </section>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Email Address Specification</name>
+      <t>
+	Email address syntax is defined in in <xref target="RFC6530" format="default">RFC 6530</xref>.  This mapping does not
+  prescribe minimum or maximum lengths for character strings used to represent email addresses.
+      </t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>EPP commands mapping</name>
+      <t>A detailed description of the EPP syntax and semantics can be found
+    in the EPP core protocol specification <xref target="RFC5730" format="default"/>.</t>
+      <section anchor="queryCommands" numbered="true" toc="default">
+        <name>EPP Query Commands</name>
+        <t>EPP provides three commands to retrieve object information: &lt;check&gt; to determine
+        if an object is known to the server, &lt;info&gt; to retrieve detailed information associated
+        with an object, and &lt;transfer&gt; to retrieve object transfer status information.</t>
+        <section anchor="checkCommand" numbered="true" toc="default">
+          <name>EPP &lt;check&gt; Command</name>
+          <t>This extension does not add any elements to the EPP &lt;check&gt; command
+       or &lt;check&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
+        </section>
+        <section anchor="infoCommand" numbered="true" toc="default">
+          <name>EPP &lt;info&gt; command</name>
+          <t>This extension does not define additional elements to extend the EPP
+           &lt;info&gt; command of an EPP object mapping, but does include additional elements
+           to extend the EPP &lt;info&gt; response.</t>
+          <t>If the query was successful, the server replies with the regular EPP &lt;resData&gt;.
+            If the client includes the "eai-0.1" XML namespace in the login services, the email address
+            exists, and the email address was
+            set using the extension in the <xref target="createCommand">create command</xref> or <xref target="updateCommand">update command</xref>,
+            then the EPP object mapping email element <bcp14>SHOULD</bcp14> be set with the value "[EAI-ADDRESS]" value, as described in <xref target="eaiAddressValue"/>, and
+            the <xref target="eaiExtElement">&lt;eai:eai&gt; extension element</xref> is included in the response with the email address value.
+          </t>
+          <t>
+       Example &lt;info&gt; response for the authorized client:
+          </t>
+          <artwork name="" type="" align="left" alt=""><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <contact:infData
+S:        xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+S:        <contact:id>sh8013</contact:id>
+S:        <contact:roid>SH8013-REP</contact:roid>
+S:        <contact:status s="linked"/>
+S:        <contact:status s="clientDeleteProhibited"/>
+S:        <contact:postalInfo type="int">
+S:          <contact:name>John Doe</contact:name>
+S:          <contact:org>Example Inc.</contact:org>
+S:          <contact:addr>
+S:            <contact:street>123 Example Dr.</contact:street>
+S:            <contact:street>Suite 100</contact:street>
+S:            <contact:city>Dulles</contact:city>
+S:            <contact:sp>VA</contact:sp>
+S:            <contact:pc>20166-6503</contact:pc>
+S:            <contact:cc>US</contact:cc>
+S:          </contact:addr>
+S:        </contact:postalInfo>
+S:        <contact:voice x="1234">+1.7035555555</contact:voice>
+S:        <contact:fax>+1.7035555556</contact:fax>
+S:        <contact:email>jdoe@example.com</contact:email>
+S:        <contact:clID>ClientY</contact:clID>
+S:        <contact:crID>ClientX</contact:crID>
+S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
+S:        <contact:upID>ClientX</contact:upID>
+S:        <contact:upDate>1999-12-03T09:00:00.0Z</contact:upDate>
+S:        <contact:trDate>2000-04-08T09:00:00.0Z</contact:trDate>
+S:        <contact:authInfo>
+S:          <contact:pw>2fooBAR</contact:pw>
+S:        </contact:authInfo>
+S:        <contact:disclose flag="0">
+S:          <contact:voice/>
+S:          <contact:email/>
+S:        </contact:disclose>
+S:      </contact:infData>
+S:    </resData>
+S:    <extension>
+S:      <eai:eai
+S:        xmlns:eai=
+S:          "urn:ietf:params:xml:ns:epp:eai-0.1">
+S:        <eai:email>someaddress@example.com</eai:email>
+S:      </eai:eai>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54322-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></artwork>
+        </section>
+        <section anchor="transferQueryCommand" numbered="true" toc="default">
+          <name>EPP &lt;transfer&gt; Command</name>
+          <t>This extension does not add any elements to the EPP &lt;transfer&gt; query command
+       or &lt;transfer&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
+        </section>
+      </section>
+      <section anchor="transformCommands" numbered="true" toc="default">
+        <name>EPP Transform Commands</name>
+        <t>EPP provides five commands to transform objects: &lt;create&gt; to create an instance of an object,
+      &lt;delete&gt; to delete an instance of an object, &lt;renew&gt; to extend the validity period of an object,
+      &lt;transfer&gt; to manage object sponsorship changes, and &lt;update&gt; to change information associated
+      with an object.</t>
+        <section anchor="createCommand" numbered="true" toc="default">
+          <name>EPP &lt;create&gt; command</name>
+          <t>This extension defines additional elements to extend the EPP
+             &lt;create&gt; command of an object mapping like the
+             <xref target="RFC5733">EPP contact mapping</xref></t>
 
-	 <t>
+             <t>The EPP &lt;create&gt; command provides a transform operation that allows a client to create an object.
+                In addition to the EPP command elements described in an object mapping like the <xref target="RFC5733">EPP contact mapping</xref>,
+                the command MAY contain a child &lt;eai:eai&gt; element, as defined in <xref target="eaiExtElement"/>.</t>
+
+          <t>
+       Example &lt;create&gt; command:
+          </t>
+          <artwork name="" type="" align="left" alt=""><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <create>
+C:      <contact:create
+C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+C:        <contact:id>sh8013</contact:id>
+C:        <contact:postalInfo type="int">
+C:          <contact:name>John Doe</contact:name>
+C:          <contact:org>Example Inc.</contact:org>
+C:          <contact:addr>
+C:            <contact:street>123 Example Dr.</contact:street>
+C:            <contact:street>Suite 100</contact:street>
+C:            <contact:city>Dulles</contact:city>
+C:            <contact:sp>VA</contact:sp>
+C:            <contact:pc>20166-6503</contact:pc>
+C:            <contact:cc>US</contact:cc>
+C:          </contact:addr>
+C:        </contact:postalInfo>
+C:        <contact:voice x="1234">+1.7035555555</contact:voice>
+C:        <contact:fax>+1.7035555556</contact:fax>
+C:        <contact:email>[EAI-ADDRESS]</contact:email>
+C:        <contact:authInfo>
+C:          <contact:pw>2fooBAR</contact:pw>
+C:        </contact:authInfo>
+C:        <contact:disclose flag="0">
+C:          <contact:voice/>
+C:          <contact:email/>
+C:        </contact:disclose>
+C:      </contact:create>
+C:    </create>
+C:    <extension>
+C:      <eai:eai
+C:        xmlns:eai=
+C:          "urn:ietf:params:xml:ns:epp:eai-0.1">
+C:        <eai:email>someaddress@example.com</eai:email>
+C:      </eai:eai>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+        </section>
+        <section anchor="deleteCommand" numbered="true" toc="default">
+          <name>EPP &lt;delete&gt; Command</name>
+          <t>This extension does not add any elements to the EPP &lt;delete&gt; command
+       or &lt;delete&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
+        </section>
+        <section anchor="renewCommand" numbered="true" toc="default">
+          <name>EPP &lt;renew&gt; Command</name>
+          <t>This extension does not add any elements to the EPP &lt;renew&gt; command
+       or &lt;renew&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
+        </section>
+        <section anchor="transferCommand" numbered="true" toc="default">
+          <name>EPP &lt;transfer&gt; Command</name>
+          <t>This extension does not add any elements to the EPP &lt;transfer&gt; command
+       or &lt;transfer&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
+        </section>
+        <section anchor="updateCommand" numbered="true" toc="default">
+          <name>EPP &lt;update&gt; command</name>
+            <t>The EPP &lt;update&gt; command provides a transform operation that allows a client to update an object.
+               In addition to the EPP command elements described in an object mapping like the <xref target="RFC5733">EPP contact mapping</xref>,
+               the command MAY contain a child &lt;eai:eai&gt; element, as defined in <xref target="eaiExtElement"/>.
+               When executing the &lt;update&gt; command, there are multiple possibilities of changing the email address:</t>
+              <ul empty="false" spacing="normal">
+                <li>The EPP object mapping email element is not includes, which means the email address of the contact is not changed.
+                  The extension <bcp14>MUST NOT</bcp14> be present.</li>
+                <li>The EPP object mapping email element is included with the "[EAI-ADDRESS]" value, the extension <bcp14>MUST</bcp14> be present and contain a valid email address.</li>
+                <li>The EPP object mapping email element is included without the "[EAI-ADDRESS]" value, the extension <bcp14>MUST NOT</bcp14> be present.</li>
+              </ul>
+          <t>
+         Example &lt;update&gt; command:
+          </t>
+          <artwork name="" type="" align="left" alt=""><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <update>
+C:      <contact:update
+C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+C:        <contact:id>sh8013</contact:id>
+C:        <contact:chg>
+C:          <contact:email>[EAI-ADDRESS]</contact:email>
+C:        </contact:chg>
+C:      </contact:update>
+C:    </update>
+C:    <extension>
+C:      <eai:eai
+C:        xmlns:eai=
+C:          "urn:ietf:params:xml:ns:epp:eai-0.1">
+C:        <eai:email>someaddress@example.net</eai:email>
+C:      </eai:eai>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></artwork>
+        </section>
+      </section>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Formal syntax</name>
+      <t>The Internationalized Email Addresses in EPP protocol schema is presented here.</t>
+      <t>
    The formal syntax shown here is a complete XML Schema representation
    of the object mapping suitable for automated validation of EPP XML
    instances.  The &lt;CODE BEGINS&gt; and &lt;CODE ENDS&gt; tags are not part of
    the XML Schema; they are used to note the beginning and ending of the
    XML Schema for URI registration purposes.
-   </t>
-<t>
-<figure><artwork><![CDATA[
-   <CODE BEGINS>
-     <?xml version="1.0" encoding="UTF-8"?>
-     <schema xmlns="http://www.w3.org/2001/XMLSchema"
-       xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
-       xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
-       xmlns:eppEAI="urn:ietf:params:xml:ns:epp:eppEAI-1.0"
-       targetNamespace="urn:ietf:params:xml:ns:epp:eppEAI-1.0"
-       elementFormDefault="qualified">
-       <!--
-       Import common element types.
-       -->
-       <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" />
-       <import namespace="urn:ietf:params:xml:ns:epp-1.0" />
-       <annotation>
-         <documentation>
-           Use of Internationalized Email Addresses in
-           Extensible Provisioning Protocol v1.0 Schema.
-         </documentation>
-       </annotation>
+      </t>
+      <sourcecode name="" type="" markers="true"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+   xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+   xmlns:eai="urn:ietf:params:xml:ns:epp:eai-0.1"
+   targetNamespace="urn:ietf:params:xml:ns:epp:eai-0.1"
+   elementFormDefault="qualified">
+   <!--
+   Import common element types.
+   -->
+   <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" />
+   <import namespace="urn:ietf:params:xml:ns:epp-1.0" />
+   <annotation>
+     <documentation>
+       Use of Internationalized Email Addresses in
+       Extensible Provisioning Protocol v1.0 Schema.
+     </documentation>
+   </annotation>
 
-       <!-- EAI extension element -->
-       <element name="eppEAI" type="eppEAI:eppEAIType" />
+   <!-- EAI extension element -->
+   <element name="eai" type="eai:eaiType" />
 
-       <complexType name="eppEAIType">
-         <sequence>
-           <element name="email"
-             type="eppcom:minTokenType"/>
-         </sequence>
-       </complexType>
+   <complexType name="eaiType">
+     <sequence>
+       <element name="email"
+         type="eppcom:minTokenType"/>
+     </sequence>
+   </complexType>
 
-     </schema>
-   <CODE ENDS>
-]]></artwork></figure>
-	</t>
-
-	</section>
-	<section title="Security Considerations">
-	<t>
-	Registries SHOULD validate the validity of the domain names in the provided email addresses.
-	This can be done by validating all code points according to IDNA2008 <xref target="RFC5892" />.
-	</t>
-	</section>
-	<section title="IANA Considerations">
-	<section title="XML Namespace">
-
-  <t> This document uses URNs to describe XML namespaces and XML schemas
-   conforming to a registry mechanism described in RFC 3688 <xref target="RFC3688" />.  The
+</schema>
+]]></sourcecode>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Security Considerations</name>
+      <t>
+	Registries <bcp14>SHOULD</bcp14> validate the domain names in the provided email addresses.
+	This can be done by validating all code points according to IDNA2008 <xref target="RFC5892" format="default"/>.
+      </t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>IANA Considerations</name>
+      <section numbered="true" toc="default">
+        <name>XML Namespace</name>
+        <t> This document uses URNs to describe XML namespaces and XML schemas
+   conforming to a registry mechanism described in  <xref target="RFC3688" format="default">RFC 3688</xref>.  The
    following URI assignment should be made by IANA:</t>
-
-	 <t> Registration request for the eppEAI namespace:</t>
-<t>
-<figure><artwork><![CDATA[
-   URI:  urn:ietf:params:xml:ns:epp:eppEAI-1.0
+        <t> Registration request for the eai namespace:</t>
+        <artwork name="" type="" align="left" alt=""><![CDATA[
+   URI:  urn:ietf:params:xml:ns:epp:eai-0.1
    Registrant Contact:  IESG
    XML:  None.  Namespace URIs do not represent an XML specification.
 
-   Registration request for the eppEAI XML Schema:
+   Registration request for the eai XML Schema:
 
-   URI:  urn:ietf:params:xml:schema:epp:eppEAI-1.0
+   URI:  urn:ietf:params:xml:schema:epp:eai-0.1
    Registrant Contact:  IESG
    XML:  See the "Formal Syntax" section of this document.
-]]></artwork></figure>
-	</t>
-	</section>
-
-  <section title="EPP Extension Registry">
-  <t>
+]]></artwork>
+      </section>
+      <section numbered="true" toc="default">
+        <name>EPP Extension Registry</name>
+        <t>
    The EPP extension described in this document should be registered by
    IANA in the "Extensions for the Extensible Provisioning Protocol
-   (EPP)" registry described in RFC 7451 <xref target="RFC7451" />.  The details of the
+   (EPP)" registry described in RFC 7451 <xref target="RFC7451" format="default"/>.  The details of the
    registration are as follows:
-  </t>
-
-<t>
-<figure><artwork><![CDATA[
+        </t>
+        <artwork name="" type="" align="left" alt=""><![CDATA[
    Name of Extension: Use of Internationalized Email Addresses
                       in EPP protocol
    Document status:  Standards Track
@@ -417,38 +441,210 @@ value for the email attribute and the corresponding email value in the
    IPR Disclosure:  None
    Status:  Active
    Notes:  None
-]]></artwork></figure>
-	</t>
-	</section>
-	</section>
-	<section title="Implementation Considerations">
-	<t>
+]]></artwork>
+      </section>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Implementation Considerations</name>
+      <t>
 	For the sake of uniform syntax on the client side, it is RECOMMENDED to registries to
-	allow any valid address, including the ASCII-only, in the &lt;eppEAI:email&gt; element.
-	</t>
-	<t>
+	allow any valid address, including the ASCII-only, in the &lt;eai:email&gt; element.
+      </t>
+      <t>
 	Registries MAY apply extra limitation to the email address syntax (e.g. the addresses can be limited to Left-to-Right scripts). These limitations are out of scope of this document.
-	</t>
-	</section>
+      </t>
+    </section>
   </middle>
-
   <back>
-  <references title="Normative References">
-  &RFC2119;
-  &RFC3688;
-  &RFC3735;
-  &RFC5733;
-  &RFC6530;
-  &RFC7451;
-  &RFC8174;
-  </references>
-  <references title="Informative References">
-  &RFC5730;
-  &RFC5731;
-  &RFC5732;
-  &RFC5734;
-  &RFC5892;
-  </references>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+          <front>
+            <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+            <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+            <seriesInfo name="RFC" value="2119"/>
+            <seriesInfo name="BCP" value="14"/>
+            <author initials="S." surname="Bradner" fullname="S. Bradner">
+              <organization/>
+            </author>
+            <date year="1997" month="March"/>
+            <abstract>
+              <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC3688" target="https://www.rfc-editor.org/info/rfc3688" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml">
+          <front>
+            <title>The IETF XML Registry</title>
+            <seriesInfo name="DOI" value="10.17487/RFC3688"/>
+            <seriesInfo name="RFC" value="3688"/>
+            <seriesInfo name="BCP" value="81"/>
+            <author initials="M." surname="Mealling" fullname="M. Mealling">
+              <organization/>
+            </author>
+            <date year="2004" month="January"/>
+            <abstract>
+              <t>This document describes an IANA maintained registry for IETF standards which use Extensible Markup Language (XML) related items such as Namespaces, Document Type Declarations (DTDs), Schemas, and Resource Description Framework (RDF) Schemas.</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC3735" target="https://www.rfc-editor.org/info/rfc3735" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3735.xml">
+          <front>
+            <title>Guidelines for Extending the Extensible Provisioning Protocol (EPP)</title>
+            <seriesInfo name="DOI" value="10.17487/RFC3735"/>
+            <seriesInfo name="RFC" value="3735"/>
+            <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
+              <organization/>
+            </author>
+            <date year="2004" month="March"/>
+            <abstract>
+              <t>The Extensible Provisioning Protocol (EPP) is an application layer client-server protocol for the provisioning and management of objects stored in a shared central repository.  Specified in XML, the protocol defines generic object management operations and an extensible framework that maps protocol operations to objects.  This document presents guidelines for use of EPP's extension mechanisms to define new features and object management capabilities.  This memo provides information for the Internet community.</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC5730" target="https://www.rfc-editor.org/info/rfc5730" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml">
+          <front>
+            <title>Extensible Provisioning Protocol (EPP)</title>
+            <seriesInfo name="DOI" value="10.17487/RFC5730"/>
+            <seriesInfo name="RFC" value="5730"/>
+            <seriesInfo name="STD" value="69"/>
+            <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
+              <organization/>
+            </author>
+            <date year="2009" month="August"/>
+            <abstract>
+              <t>This document describes an application-layer client-server protocol for the provisioning and management of objects stored in a shared central repository.  Specified in XML, the protocol defines generic object management operations and an extensible framework that maps protocol operations to objects.  This document includes a protocol specification, an object mapping template, and an XML media type registration.  This document obsoletes RFC 4930.  [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC5733" target="https://www.rfc-editor.org/info/rfc5733" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5733.xml">
+          <front>
+            <title>Extensible Provisioning Protocol (EPP) Contact Mapping</title>
+            <seriesInfo name="DOI" value="10.17487/RFC5733"/>
+            <seriesInfo name="RFC" value="5733"/>
+            <seriesInfo name="STD" value="69"/>
+            <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
+              <organization/>
+            </author>
+            <date year="2009" month="August"/>
+            <abstract>
+              <t>This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of individual or organizational social information identifiers (known as "contacts") stored in a shared central repository.  Specified in Extensible Markup Language (XML), the mapping defines EPP command syntax and semantics as applied to contacts.  This document obsoletes RFC 4933.   [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC6530" target="https://www.rfc-editor.org/info/rfc6530" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6530.xml">
+          <front>
+            <title>Overview and Framework for Internationalized Email</title>
+            <seriesInfo name="DOI" value="10.17487/RFC6530"/>
+            <seriesInfo name="RFC" value="6530"/>
+            <author initials="J." surname="Klensin" fullname="J. Klensin">
+              <organization/>
+            </author>
+            <author initials="Y." surname="Ko" fullname="Y. Ko">
+              <organization/>
+            </author>
+            <date year="2012" month="February"/>
+            <abstract>
+              <t>Full use of electronic mail throughout the world requires that (subject to other constraints) people be able to use close variations on their own names (written correctly in their own languages and scripts) as mailbox names in email addresses.  This document introduces a series of specifications that define mechanisms and protocol extensions needed to fully support internationalized email addresses.  These changes include an SMTP extension and extension of email header syntax to accommodate UTF-8 data.  The document set also includes discussion of key assumptions and issues in deploying fully internationalized email.  This document is a replacement for RFC 4952; it reflects additional issues identified since that document was published.  [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC7451" target="https://www.rfc-editor.org/info/rfc7451" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7451.xml">
+          <front>
+            <title>Extension Registry for the Extensible Provisioning Protocol</title>
+            <seriesInfo name="DOI" value="10.17487/RFC7451"/>
+            <seriesInfo name="RFC" value="7451"/>
+            <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
+              <organization/>
+            </author>
+            <date year="2015" month="February"/>
+            <abstract>
+              <t>The Extensible Provisioning Protocol (EPP) includes features to add functionality by extending the protocol.  It does not, however, describe how those extensions are managed.  This document describes a procedure for the registration and management of extensions to EPP, and it specifies a format for an IANA registry to record those extensions.</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
+          <front>
+            <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
+            <seriesInfo name="DOI" value="10.17487/RFC8174"/>
+            <seriesInfo name="RFC" value="8174"/>
+            <seriesInfo name="BCP" value="14"/>
+            <author initials="B." surname="Leiba" fullname="B. Leiba">
+              <organization/>
+            </author>
+            <date year="2017" month="May"/>
+            <abstract>
+              <t>RFC 2119 specifies common key words that may be used in protocol  specifications.  This document aims to reduce the ambiguity by clarifying that only UPPERCASE usage of the key words have the  defined special meanings.</t>
+            </abstract>
+          </front>
+        </reference>
+      </references>
+      <references>
+        <name>Informative References</name>
+        <reference anchor="RFC5892" target="https://www.rfc-editor.org/info/rfc5892" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5892.xml">
+          <front>
+            <title>The Unicode Code Points and Internationalized Domain Names for Applications (IDNA)</title>
+            <seriesInfo name="DOI" value="10.17487/RFC5892"/>
+            <seriesInfo name="RFC" value="5892"/>
+            <author initials="P." surname="Faltstrom" fullname="P. Faltstrom" role="editor">
+              <organization/>
+            </author>
+            <date year="2010" month="August"/>
+            <abstract>
+              <t>This document specifies rules for deciding whether a code point, considered in isolation or in context, is a candidate for inclusion in an Internationalized Domain Name (IDN).  </t>
+              <t>It is part of the specification of Internationalizing Domain Names in Applications 2008 (IDNA2008).  [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC8543" target="https://www.rfc-editor.org/info/rfc8543" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8543.xml">
+          <front>
+            <title>Extensible Provisioning Protocol (EPP) Organization Mapping</title>
+            <seriesInfo name="DOI" value="10.17487/RFC8543"/>
+            <seriesInfo name="RFC" value="8543"/>
+            <author initials="L." surname="Zhou" fullname="L. Zhou">
+              <organization/>
+            </author>
+            <author initials="N." surname="Kong" fullname="N. Kong">
+              <organization/>
+            </author>
+            <author initials="J." surname="Yao" fullname="J. Yao">
+              <organization/>
+            </author>
+            <author initials="J." surname="Gould" fullname="J. Gould">
+              <organization/>
+            </author>
+            <author initials="G." surname="Zhou" fullname="G. Zhou">
+              <organization/>
+            </author>
+            <date year="2019" month="March"/>
+            <abstract>
+              <t>This document describes an Extensible Provisioning Protocol (EPP) mapping for provisioning and management of organization objects stored in a shared central repository.</t>
+            </abstract>
+          </front>
+        </reference>
+      </references>
+    </references>
+    <section numbered="true" toc="default">
+      <name>Change History</name>
+      <section anchor="change-00-to-01" numbered="true" toc="default">
+        <name>Change from 00 to 01</name>
+        <ol spacing="normal" type="1">
+          <li>Changed from update of RFC 5733 to use the "Placeholder Text and a New Email Element" EPP Extension approach.</li>
+        </ol>
+      </section>
+      <section anchor="change-01-to-02" numbered="true" toc="default">
+        <name>Change from 01 to 02</name>
+        <ol spacing="normal" type="1">
+          <li>Fixed the XML schema and the XML examples based on validating them.</li>
+          <li>Added James Gould as co-author.</li>
+          <li>Updated the language to apply to any EPP object mapping and to use the EPP contact mapping as an example.</li>
+          <li>Updated the structure of document to be consistent with the other Command-Response Extensions.</li>
+          <li>Replaced the use of "eppEAI" in the XML namespace and the XML namespace prefix with "eai".</li>
+          <li>Changed to use a pointed XML namespace with "0.1" instead of "1.0".</li>
+        </ol>
+      </section>
+    </section>
   </back>
-
-  </rfc>
+</rfc>
