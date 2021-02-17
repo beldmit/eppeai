@@ -124,8 +124,29 @@
    in an &lt;svcExtension&gt; &lt;extURI&gt; element of the [RFC5730] Greeting.
 	    </t>
 	    <t>
-   If both client and server have indicated the support of the EAI addresses during the session establishment, it implies possibility to process the EAI address in any message having the email attribute during the established session. 
+		    If both client and server have indicated the support of the EAI addresses during the session establishment, it implies possibility to process the EAI address in any message having the email attribute during the established session.
 	    </t>
+	    <t>The server obligations are:</t>
+		    <ul>
+		    <li>Accept EAI compatible addresses for all e-mail attribute fields in the EPP session negotiated object-level extensions and command-response extensions.  For example the &lt;contact:email&gt; element in [RFC5733] and the &lt;org:email&gt; element in [RFC8543].</li>
+
+		    <li>Accept EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
+
+		    <li>E-mail addresses validation based on EAI rules.  QUESTION – Is there an RFC that we can reference for the appropriate EAI validation rules to implement.</li>
+
+		    <li>Storage of e-mail attribute fields that supports internationalized characters.  NOTE – This will receive some discussion from the working group, since this falls in to implementation and not protocol.  This may get removed later.</li>
+
+		    <li>Return EAI compatible addresses for all e-mail attributes fields in the EPP responses for clients that do announce support for EAI in the login, and don’t return the optional e-mail attribute fields or return the “[EAI-ADDRESS]” predefined value for required e-mail attribute fields in the EPP responses for clients that don’t announce support for EAI in the login.  NOTE – This is a discussion point of how to handle clients that don’t announce support for EAI.  I believe it would be bad and non-compliant with the extension to return the e-mail values to non-supporting clients.  We shouldn’t require the server to determine which e-mails are EAI and either not return or return the pre-defined value for EAI values.  In the end I believe there is still the need for use of the placeholder text for non-supporting clients.</li>
+    </ul>
+
+    <t>The client obligations are:</t>
+    <ul>
+	    <li>Provide EAI compatible addresses for all e-mail attribute fields in the EPP session negotiated object-level extensions and command-response extensions.  For example the &lt;contact:email&gt; element in [RFC5733] and the &lt;org:email&gt; element in [RFC8543].  NOTE – Mirror of the first server requirement</li>
+
+	    <li> Provide EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session. NOTE – Mirror of the second server requirement</li>
+
+	    <li>Accept EAI compatible addresses in the EPP responses for all e-mail attribute fields in the EPP session negotiated object-level extensions and command-response extensions.</li>
+	    </ul>
 	    <t>
     If neither client nor server indicated the support of the EAI address, it implies that all the attributes email in the protocol message are compliant to the specifications describing the managed object.
 	    </t>
