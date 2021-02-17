@@ -7,7 +7,7 @@
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in EPP protocol</title>
-    <seriesInfo name="Internet-Draft" value="draft-belyavskiy-epp-eai-02"/>
+    <seriesInfo name="Internet-Draft" value="draft-belyavskiy-epp-eai-03"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -34,14 +34,12 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-    <date month="November" year="2020" day="18"/>
+    <date month="February" year="2021" day="17"/>
     <abstract>
       <t>
-   This document permits usage of Internationalized Email Addresses in the EPP protocol.
+   This document permits usage of Internationalized Email Addresses in the EPP protocol and specifies the terms when it can be used by EPP clients and servers.
 	 The Extensible Provisioning Protocol (EPP), being developed before appearing the standards
 	 for Internationalized Email Addresses (EAI), does not support such email addressed.
-	 This document describes an EPP extension that allows EAI addresses to be used with an EPP object mapping
-   like the EPP contact mapping.
       </t>
       <t>TO BE REMOVED on turning to RFC: The document is edited in <eref target="https://github.com/beldmit/eppeai"> the dedicated github repo</eref>. Please send your submissions via GitHub.
       </t>
@@ -55,10 +53,9 @@
 	To make such addresses more widely accepted, the changes to various protocols need to be introduced.
       </t>
       <t>
-   This document describes an Extensible Provisioning Protocol (EPP)
-   extension for using the Email Addresses Internationalized (EAI)
-	 in an extension to EPP object mappings like the <xref target="RFC5733" format="default">EPP contact mapping</xref>.
-   The extension can be applied to any EPP object mapping that uses an email address, where
+   This document describes an Extensible Provisioning Protocol (EPP) notification mechanism for indicatinf the support of Email Addresses Internationalized (EAI)
+	 in object mappings like the <xref target="RFC5733" format="default">EPP contact mapping</xref>.
+   The described mechanism can be applied to any EPP object mapping that uses an email address, where
    the <xref target="RFC5733" format="default">EPP contact mapping</xref> is used in the examples.
       </t>
       <t>
@@ -72,7 +69,17 @@
       <t>
 	<xref target="RFC3735" format="default">RFC 3735</xref> provides a guideline to extend the EPP protocol for various purposes.  This extension
   represents a Command-Response Extension.
+</t>
+      <t>
+   This document describes an Extensible Provisioning Protocol (EPP)
+   extension for using the Email Addresses Internationalized (EAI)
+	 in an extension to EPP object mappings like the <xref target="RFC5733" format="default">EPP contact mapping</xref>.
+   The extension can be applied to any EPP object mapping that uses an email address, where
+   the <xref target="RFC5733" format="default">EPP contact mapping</xref> is used in the examples.
       </t>
+<t>
+        In this document we introduce the new mechanism designed to exchange the necessary information between peers. The extension uses the EPP greeting and EPP login services to signal a functional enhancement of all of the object-level extensions or command-response extensions that include an e-mail address field.  It pretty much represents an override of the validation and storage of the email addresses with an extensible set of EPP objects and command-response extensions supported over an EPP session.  There are no new EPP XML elements to flag or carry EAI values.  This is broad, but I believe it would be simple and effective.
+	</t>
       <section numbered="true" toc="default">
         <name>Conventions Used in This Document</name>
         <t> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
@@ -104,36 +111,27 @@
       </t>
     </section>
     <section numbered="true" toc="default">
-      <name>Object Attributes</name>
-      <t>
-    This extension adds additional elements to EPP object mappings like the <xref target="RFC5733" format="default">EPP contact mapping</xref>. Only those new elements
-        are described here.
-      </t>
-      <section anchor="eaiExtElement" numbered="true" toc="default">
-        <name>&lt;eai:eai&gt; Extension Element</name>
-        <t>The &lt;eai:eai&gt; element can be added to a command or response to override an email element using the "[EAI-ADDRESS]" value,
-          as described in <xref target="eaiAddressValue"/>.  The &lt;eai:eai&gt; element element contains the following child elements:</t>
-          <dl newline="false" spacing="compact" indent="4">
-            <dt>&lt;eai:email&gt;:</dt>
-            <dd>Contains an email address matching the specification in <xref target="RFC6530" format="default">RFC 6530</xref>.</dd>
-          </dl>
-        <t>Example &lt;eai:eai&gt; element containing an EAI email address:
-        </t>
-        <artwork name="" type="" align="left" alt=""><![CDATA[
-<eai:eai "urn:ietf:params:xml:ns:epp:eai-0.1">
-  <eai:email>someaddress@example.com</eai:email>
-</eai:eai>
-]]></artwork>
-      </section>
-      <section anchor="eaiAddressValue" numbered="true" toc="default">
-        <name>[EAI-ADDRESS] Email Value</name>
-        <t>
-    When an EPP object mapping email element contains the predefined value of "[EAI-ADDRESS]", the &lt;eai:email&gt; element overrides the EPP object mapping email element,
-    which is a constant value for the server to use the &lt;eai:email&gt; element for the value.  The "[EAI-ADDRESS]" predefined string <bcp14>MUST</bcp14> be supported
-    by the server for the client to explicitly indicate to the server whether to use &lt;eai:email&gt; element in place of the EPP object email element.
-    The server <bcp14>MUST NOT</bcp14> allow the client to set the EPP object mapping email element to the value "[EAI-ADDRESS]".
-        </t>
-      </section>
+	    <name>Indicating the support of EAI addresses</name>
+	    <t>   
+    This document does not define new protocol but an operational
+   practice using the existing EPP protocol, where the client and the
+   server can signal support for the operational practice using a
+   namespace URI in the login and greeting extension services.  The
+   namespace URI "eai-0.1"
+   is used to signal support for the operational practice.  The client
+   includes the namespace URI in an &lt;svcExtension&gt; &lt;extURI&gt; element of
+   the [RFC5730] &lt;login&gt; Command.  The server includes the namespace URI
+   in an &lt;svcExtension&gt; &lt;extURI&gt; element of the [RFC5730] Greeting.
+	    </t>
+	    <t>
+   If both client and server have indicated the support of the EAI addresses during the session establishment, it implies possibility to process the EAI address in any message having the email attribute during the established session. 
+	    </t>
+	    <t>
+    If neither client nor server indicated the support of the EAI address, it implies that all the attributes email in the protocol message are compliant to the specifications describing the managed object.
+	    </t>
+	    <t>
+		    The behaviour in case when one of the peers does not support the extension and the other does is defined below.
+    </t>
     </section>
     <section numbered="true" toc="default">
       <name>Email Address Specification</name>
@@ -159,14 +157,12 @@
         <section anchor="infoCommand" numbered="true" toc="default">
           <name>EPP &lt;info&gt; command</name>
           <t>This extension does not define additional elements to extend the EPP
-           &lt;info&gt; command of an EPP object mapping, but does include additional elements
-           to extend the EPP &lt;info&gt; response.</t>
+           &lt;info&gt; command of an EPP object mapping, but, being supported by both peers, allows using the EAI address in the response.
+           </t>
           <t>If the query was successful, the server replies with the regular EPP &lt;resData&gt;.
-            If the client includes the "eai-0.1" XML namespace in the login services, the email address
-            exists, and the email address was
-            set using the extension in the <xref target="createCommand">create command</xref> or <xref target="updateCommand">update command</xref>,
-            then the EPP object mapping email element <bcp14>SHOULD</bcp14> be set with the value "[EAI-ADDRESS]" value, as described in <xref target="eaiAddressValue"/>, and
-            the <xref target="eaiExtElement">&lt;eai:eai&gt; extension element</xref> is included in the response with the email address value.
+            If both peers include the "eai-0.1" XML namespace in the login services, the EAI email address is set as 
+            the email attribute using the <xref target="createCommand">create command</xref> or <xref target="updateCommand">update command</xref>,
+            then the EPP object mapping email element <bcp14>SHOULD</bcp14> be included in the response with the email address value.
           </t>
           <t>
        Example &lt;info&gt; response for the authorized client:
@@ -199,7 +195,7 @@ S:          </contact:addr>
 S:        </contact:postalInfo>
 S:        <contact:voice x="1234">+1.7035555555</contact:voice>
 S:        <contact:fax>+1.7035555556</contact:fax>
-S:        <contact:email>jdoe@example.com</contact:email>
+S:        <contact:email>someEAIaddress@example.com</contact:email>
 S:        <contact:clID>ClientY</contact:clID>
 S:        <contact:crID>ClientX</contact:crID>
 S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
@@ -215,13 +211,6 @@ S:          <contact:email/>
 S:        </contact:disclose>
 S:      </contact:infData>
 S:    </resData>
-S:    <extension>
-S:      <eai:eai
-S:        xmlns:eai=
-S:          "urn:ietf:params:xml:ns:epp:eai-0.1">
-S:        <eai:email>someaddress@example.com</eai:email>
-S:      </eai:eai>
-S:    </extension>
 S:    <trID>
 S:      <clTRID>ABC-12345</clTRID>
 S:      <svTRID>54322-XYZ</svTRID>
@@ -243,14 +232,14 @@ S:</epp>]]></artwork>
       with an object.</t>
         <section anchor="createCommand" numbered="true" toc="default">
           <name>EPP &lt;create&gt; command</name>
-          <t>This extension defines additional elements to extend the EPP
+          <t>This extension allows using the EAI email addresses in the EPP
              &lt;create&gt; command of an object mapping like the
              <xref target="RFC5733">EPP contact mapping</xref></t>
 
-             <t>The EPP &lt;create&gt; command provides a transform operation that allows a client to create an object.
-                In addition to the EPP command elements described in an object mapping like the <xref target="RFC5733">EPP contact mapping</xref>,
-                the command MAY contain a child &lt;eai:eai&gt; element, as defined in <xref target="eaiExtElement"/>.</t>
-
+     <t>The EPP &lt;create&gt; command provides a transform operation that allows a client to create an object.
+          This extension does not define additional elements to extend the EPP
+           &lt;create&gt; command of an EPP object mapping, but, being supported by both peers, allows using the EAI address in the request.
+	     </t>
           <t>
        Example &lt;create&gt; command:
           </t>
@@ -276,7 +265,7 @@ C:          </contact:addr>
 C:        </contact:postalInfo>
 C:        <contact:voice x="1234">+1.7035555555</contact:voice>
 C:        <contact:fax>+1.7035555556</contact:fax>
-C:        <contact:email>[EAI-ADDRESS]</contact:email>
+C:        <contact:email>someEAIaddress@example.com</contact:email>
 C:        <contact:authInfo>
 C:          <contact:pw>2fooBAR</contact:pw>
 C:        </contact:authInfo>
@@ -286,13 +275,6 @@ C:          <contact:email/>
 C:        </contact:disclose>
 C:      </contact:create>
 C:    </create>
-C:    <extension>
-C:      <eai:eai
-C:        xmlns:eai=
-C:          "urn:ietf:params:xml:ns:epp:eai-0.1">
-C:        <eai:email>someaddress@example.com</eai:email>
-C:      </eai:eai>
-C:    </extension>
 C:    <clTRID>ABC-12345</clTRID>
 C:  </command>
 C:</epp>]]></artwork>
@@ -315,15 +297,9 @@ C:</epp>]]></artwork>
         <section anchor="updateCommand" numbered="true" toc="default">
           <name>EPP &lt;update&gt; command</name>
             <t>The EPP &lt;update&gt; command provides a transform operation that allows a client to update an object.
-               In addition to the EPP command elements described in an object mapping like the <xref target="RFC5733">EPP contact mapping</xref>,
-               the command MAY contain a child &lt;eai:eai&gt; element, as defined in <xref target="eaiExtElement"/>.
-               When executing the &lt;update&gt; command, there are multiple possibilities of changing the email address:</t>
-              <ul empty="false" spacing="normal">
-                <li>The EPP object mapping email element is not includes, which means the email address of the contact is not changed.
-                  The extension <bcp14>MUST NOT</bcp14> be present.</li>
-                <li>The EPP object mapping email element is included with the "[EAI-ADDRESS]" value, the extension <bcp14>MUST</bcp14> be present and contain a valid email address.</li>
-                <li>The EPP object mapping email element is included without the "[EAI-ADDRESS]" value, the extension <bcp14>MUST NOT</bcp14> be present.</li>
-              </ul>
+          This extension does not define additional elements to extend the EPP
+           &lt;update&gt; command of an EPP object mapping, but, being supported by both peers, allows using the EAI address in the request.
+               </t>
           <t>
          Example &lt;update&gt; command:
           </t>
@@ -336,17 +312,10 @@ C:      <contact:update
 C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
 C:        <contact:id>sh8013</contact:id>
 C:        <contact:chg>
-C:          <contact:email>[EAI-ADDRESS]</contact:email>
+C:          <contact:email>someEAIaddress@example.com</contact:email>
 C:        </contact:chg>
 C:      </contact:update>
 C:    </update>
-C:    <extension>
-C:      <eai:eai
-C:        xmlns:eai=
-C:          "urn:ietf:params:xml:ns:epp:eai-0.1">
-C:        <eai:email>someaddress@example.net</eai:email>
-C:      </eai:eai>
-C:    </extension>
 C:    <clTRID>ABC-12345</clTRID>
 C:  </command>
 C:</epp>]]></artwork>
@@ -354,47 +323,16 @@ C:</epp>]]></artwork>
       </section>
     </section>
     <section numbered="true" toc="default">
-      <name>Formal syntax</name>
-      <t>The Internationalized Email Addresses in EPP protocol schema is presented here.</t>
-      <t>
-   The formal syntax shown here is a complete XML Schema representation
-   of the object mapping suitable for automated validation of EPP XML
-   instances.  The &lt;CODE BEGINS&gt; and &lt;CODE ENDS&gt; tags are not part of
-   the XML Schema; they are used to note the beginning and ending of the
-   XML Schema for URI registration purposes.
-      </t>
-      <sourcecode name="" type="" markers="true"><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema"
-   xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
-   xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
-   xmlns:eai="urn:ietf:params:xml:ns:epp:eai-0.1"
-   targetNamespace="urn:ietf:params:xml:ns:epp:eai-0.1"
-   elementFormDefault="qualified">
-   <!--
-   Import common element types.
-   -->
-   <import namespace="urn:ietf:params:xml:ns:eppcom-1.0" />
-   <import namespace="urn:ietf:params:xml:ns:epp-1.0" />
-   <annotation>
-     <documentation>
-       Use of Internationalized Email Addresses in
-       Extensible Provisioning Protocol v1.0 Schema.
-     </documentation>
-   </annotation>
-
-   <!-- EAI extension element -->
-   <element name="eai" type="eai:eaiType" />
-
-   <complexType name="eaiType">
-     <sequence>
-       <element name="email"
-         type="eppcom:minTokenType"/>
-     </sequence>
-   </complexType>
-
-</schema>
-]]></sourcecode>
+	    <name>Recommended behaviour in case of mismatch</name>
+    <section numbered="true" toc="default">
+	    <name>Client supports the extension, server does not</name>
+	    
+    </section>
+    <section numbered="true" toc="default">
+	    <name>Server supports the extension, client does not</name>
+	    
+    </section>
+	    
     </section>
     <section numbered="true" toc="default">
       <name>Security Considerations</name>
@@ -446,10 +384,6 @@ C:</epp>]]></artwork>
     </section>
     <section numbered="true" toc="default">
       <name>Implementation Considerations</name>
-      <t>
-	For the sake of uniform syntax on the client side, it is RECOMMENDED to registries to
-	allow any valid address, including the ASCII-only, in the &lt;eai:email&gt; element.
-      </t>
       <t>
 	Registries MAY apply extra limitation to the email address syntax (e.g. the addresses can be limited to Left-to-Right scripts). These limitations are out of scope of this document.
       </t>
