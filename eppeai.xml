@@ -348,44 +348,54 @@ C:</epp>]]></artwork>
     <section numbered="true" toc="default">
 	    <name>Client supports the extension, server does not</name>
 	    <t>
-		    <!--
-		    Client Supports EAI and Server Does Not Support EAI
-When E-mail Element is Required
-                                                                  i.      If E-mail is an EAI and obtaining an ASCII E-mail is not an option, then provide a pre-defined EAI placeholder value that will pass the server validation.
-
-I don’t believe [EAI-ADDRESS] will work for this use case.  Is there a dead EAI e-mail address that is already defined in an RFC that can be used as an EAI placeholder value?  If not, we will need to define it.
-When E-mail Element is Optional
-                                                                  i.      If E-mail is an EAI, then don’t provide the optional E-mail Element.
-
-Server Supports EAI and Client Does Not Support EAI
-When Client is the Sponsoring Client –
-                                                                  i.      Transform Commands – This applies to the Create and Update commands.
-
-When E-mail Element is Required
+		    When the email Element is Required according to schema, client supports the extension, and server does not support the extension, if the client does not have an alternative email, then client SHOULD provide a pre-defined placeholder value that will pass the server validation.
+	    </t>
+	    <t>
+		    When the email Element is Optional according to schema, client supports the extension, and server does not support the extension, if the client does not have an alternative email, then client SHOULD omit the email Element.
+    </t>
+    </section>
+    <section numbered="true" toc="default">
+	    <name>Server supports the extension, client does not</name>
+	    <section>
+		    <name>When Client is the Sponsoring Client</name>
+	    <section>
+		    <name>Transform commands</name>
+	    <t>
+		    When the email Element is Required according to schema, client does not support the extension, and server supports the extension, if the client does not have an alternative email, then client SHOULD provide a pre-defined placeholder value that will pass the server validation.
+	    </t>                                                                            
+	    <t>                                                                             
+		    When the email Element is Optional according to schema, client does not support the extension, and server supports the extension, if the client does not have an alternative email, then client SHOULD omit the email Element.
+		    
+		    When E-mail Element is Required
 Server validates E-mail Element using the ASCII E-mail validation rules on Create and Update.
 When E-mail Element is Optional
 Server validates E-mail Element when provided using the ASCII E-mail validation rules on Create and Update.
-                                                                ii.      Info Command
 
+When Client is the Non-Sponsoring Client – This applies to the Info Response and the Transfer Query Response, where the Info Response is the only known applicable command for E-mail Elements.
+	    </t>
+	    </section>
+	    <section>
+		    <name>Info command</name>
+		    <t>
 When E-mail Element is Required
 Either the value set is returned or a pre-defined EAI placeholder value is returned.  The majority of the case, the value was set by the sponsoring client, so there should be no issue returning the set value.  A corner case is after a successful transfer.  I believe the danger of blindly returning the E-mail Element that was set, is in the corner case of a successful transfer.  Potentially, the value set is returned when the last updated date of the object is after the transfer date or the object has never been transferred.
 When E-mail Element is Optional
 I believe this follows the same rule as “When E-mail Element is Required”, except the element would not be returned when the last updated date of the object is not after the transfer date or the object has been transferred.
-When Client is the Non-Sponsoring Client – This applies to the Info Response and the Transfer Query Response, where the Info Response is the only known applicable command for E-mail Elements.
-                                                                  i.      When E-mail Element is Required
+	    </t>
+	    </section>
+	    </section>
+	    <section>
+		    <name>When Client is non-Sponsoring Client</name>
+	    <t>
+Server Supports EAI and Client Does Not Support EAI
 
 Return a pre-defined EAI placeholder value that will pass the client ASCII E-mail validation.  Another option is to return a placeholder like “[EAI-ADDRESS]” to fast fail any e-mail processing by the Client.
                                                                 ii.      When E-mail Element is Optional
 
 			    Don’t return
-		    -->
-    </t>
 	    
-    </section>
-    <section numbered="true" toc="default">
-	    <name>Server supports the extension, client does not</name>
-	    <t>
     </t>
+	    </section>
 	    
     </section>
 	    
