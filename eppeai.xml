@@ -626,6 +626,13 @@ Server Supports EAI and Client Does Not Support EAI
           <li>Changed to use a pointed XML namespace with "0.1" instead of "1.0".</li>
         </ol>
       </section>
+      <section anchor="change-02-to-03" numbered="true" toc="default">
+        <name>Change from 02 to 03</name>
+	<ol spacing="normal" type="1">
+	  <li>The approach has changed to use the concept of Functional EPP Extension.</li>
+	  <li>The examples are cleaned up</li>
+        </ol>
+      </section>
     </section>
   </back>
 </rfc>
