@@ -112,7 +112,6 @@
         applies a functional capability to an existing set of EPP extensions and properties.  The scope of the applicable EPP extensions and applicable extension properties are defined in the Functional Extension along with the
         requiremenets for the servers and clients that support it.  The Functional Extension needs to cover the expected behavior of the supporting client or server when interfacing with an unsupporting client or server.
         Negotiating support for a Functional Extension is handled using the EPP Greeting and EPP Login services.</t>
-      <t>
     </section>
 
     <section numbered="true" toc="default">
@@ -184,9 +183,9 @@
 
               <li>When the email property is optional according the EPP extension command, if the client supplies the email property the server SHOULD validate the email property using the ASCII email validation rules.</li>
 
-              <li>When the email property is required in the EPP extension response, the server MUST validate whether the email property is an EAI address and if so return the predefined placeholder email TBD and otherwise return the email property that has been set.</t>
+              <li>When the email property is required in the EPP extension response, the server MUST validate whether the email property is an EAI address and if so return the predefined placeholder email TBD and otherwise return the email property that has been set.</li>
 
-              <li>When the email property is optional in the EPP extension respoonse, the server MUST validate whether the email property is an EAI address and if so don't return the email property in the respoonse and otherwise return the email property that has been set based on server policy.</t>
+              <li>When the email property is optional in the EPP extension respoonse, the server MUST validate whether the email property is an EAI address and if so don't return the email property in the respoonse and otherwise return the email property that has been set based on server policy.</li>
             </ul>
 
             <t>The EAI supporting client MUST satisfy the following obligations when the server does not support the EAI extension:</t>
@@ -256,6 +255,7 @@
       <t>
 	Registries MAY apply extra limitation to the email address syntax (e.g. the addresses can be limited to Left-to-Right scripts). These limitations are out of scope of this document.
       </t>
+    </section>
     </section>
   </middle>
   <back>
