@@ -37,9 +37,10 @@
     <date month="February" year="2021" day="17"/>
     <abstract>
       <t>
-   This document permits usage of Internationalized Email Addresses in the EPP protocol and specifies the terms when it can be used by EPP clients and servers.
+   This document describes an EPP extension that permits usage of Internationalized Email Addresses in the EPP protocol
+   and specifies the terms when it can be used by EPP clients and servers.
 	 The Extensible Provisioning Protocol (EPP), being developed before appearing the standards
-	 for Internationalized Email Addresses (EAI), does not support such email addressed.
+	 for Internationalized Email Addresses (EAI), does not support such email addresses.
       </t>
       <t>TO BE REMOVED on turning to RFC: The document is edited in <eref target="https://github.com/beldmit/eppeai"> the dedicated github repo</eref>. Please send your submissions via GitHub.
       </t>
@@ -49,51 +50,33 @@
     <section numbered="true" toc="default">
       <name>Introduction</name>
       <t>
-	RFC 6530 <xref target="RFC6530" format="default"/> introduced the framework for Internationalized Email Addresses.
+	<xref target="RFC6530" format="default"/> introduced the framework for Internationalized Email Addresses.
 	To make such addresses more widely accepted, the changes to various protocols need to be introduced.
       </t>
       <t>
-   This document describes an Extensible Provisioning Protocol (EPP) notification mechanism for indicatinf the support of Email Addresses Internationalized (EAI)
-	 in object mappings like the <xref target="RFC5733" format="default">EPP contact mapping</xref>.
-   The described mechanism can be applied to any EPP object mapping that uses an email address, where
-   the <xref target="RFC5733" format="default">EPP contact mapping</xref> is used in the examples.
+   This document describes an Extensible Provisioning Protocol (EPP) extension that permits usage of Internationalized Email Addresses in the EPP protocol
+   and specifies the terms when it can be used by EPP clients and servers.  A new form of EPP extension, referred to as a Functional Extension, is defined and used
+   to apply the rules for the handling of email address elements in all of the <xref target="RFC5730" format="default"/> extensions negotiated in the EPP session,
+   which include the object and command-responses extensions. The described mechanism can be applied to any object or command-response extension that uses an email address,
+   where the <xref target="RFC5733" format="default">EPP contact mapping</xref> is used in the examples.
       </t>
       <t>
-	The Extensible Provisioning Protocol (EPP) specified in RFC 5730 <xref target="RFC5730" format="default"/>
+	The Extensible Provisioning Protocol (EPP) specified in <xref target="RFC5730" format="default"/>
 	is a base document for object management operations and an extensible framework that maps
   protocol operations to objects. The specifics of various objects managed via EPP is described in separate documents.
   This document is only referring to an email address as a property of a managed object, such as
   the &lt;contact:email&gt; element in the <xref target="RFC5733" format="default">EPP contact mapping</xref> or
-  the &lt;org:email&gt; element in the <xref target="RFC8543" format="default">EPP organization mapping</xref>.
+  the &lt;org:email&gt; element in the <xref target="RFC8543" format="default">EPP organization mapping</xref>, and command-response
+  extensions applied to a managed object.
       </t>
-      <t>
-	<xref target="RFC3735" format="default">RFC 3735</xref> provides a guideline to extend the EPP protocol for various purposes.  This extension
-  represents a Command-Response Extension.
-</t>
-      <t>
-   This document describes an Extensible Provisioning Protocol (EPP)
-   extension for using the Email Addresses Internationalized (EAI)
-	 in an extension to EPP object mappings like the <xref target="RFC5733" format="default">EPP contact mapping</xref>.
-   The extension can be applied to any EPP object mapping that uses an email address, where
-   the <xref target="RFC5733" format="default">EPP contact mapping</xref> is used in the examples.
-      </t>
-<t>
-        In this document we introduce the new mechanism designed to exchange the necessary information between peers. The extension uses the EPP greeting and EPP login services to signal a functional enhancement of all of the object-level extensions or command-response extensions that include an e-mail address field.  It pretty much represents an override of the validation and storage of the email addresses with an extensible set of EPP objects and command-response extensions supported over an EPP session.  There are no new EPP XML elements to flag or carry EAI values.  This is broad, but I believe it would be simple and effective.
-	</t>
-      <section numbered="true" toc="default">
+        <section numbered="true" toc="default">
         <name>Conventions Used in This Document</name>
         <t> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
   "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
   as described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/> when, and only when,
   they appear in all capitals, as shown here.</t>
         <t>
-   In examples, "C:" represents lines sent by a protocol client and "S:"
-   represents lines returned by a protocol server.  In examples,
-   indentation and whitespace are provided only to illustrate element
-   relationships and are not a required feature of this protocol.
-        </t>
-        <t>
-	"eai-0.1" is used as an abbreviation for "urn:ietf:params:xml:ns:epp:eai-0.1".
+	"eai-0.2" is used as an abbreviation for "urn:ietf:params:xml:ns:epp:eai-0.2".
    The XML namespace prefix "eai" is used, but implementations <bcp14>MUST NOT</bcp14> depend on it.
    Instead, they are to employ a proper namespace-aware XML parser and
    serializer to interpret and output the XML documents.
@@ -110,277 +93,116 @@
    number than the prior versions.
       </t>
     </section>
-    <section numbered="true" toc="default">
-	    <name>Indicating the support of EAI addresses</name>
-	    <t>
-    This document does not define new protocol but an operational
-   practice using the existing EPP protocol, where the client and the
-   server can signal support for the operational practice using a
-   namespace URI in the login and greeting extension services.  The
-   namespace URI "eai-0.1"
-   is used to signal support for the operational practice.  The client
-   includes the namespace URI in an &lt;svcExtension&gt; &lt;extURI&gt; element of
-   the [RFC5730] &lt;login&gt; Command.  The server includes the namespace URI
-   in an &lt;svcExtension&gt; &lt;extURI&gt; element of the [RFC5730] Greeting.
-	    </t>
-	    <t>
-		    If both client and server have indicated the support of the EAI addresses during the session establishment, it implies possibility to process the EAI address in any message having the email attribute during the established session.
-	    </t>
-	    <t>The server obligations are:</t>
-		    <ul>
-		    <li>Accept EAI compatible addresses for all e-mail attribute fields in the EPP session negotiated object-level extensions and command-response extensions.  For example the &lt;contact:email&gt; element in [RFC5733] and the &lt;org:email&gt; element in [RFC8543].</li>
-
-		    <li>Accept EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
-
-		    <li>E-mail addresses validation based on EAI rules.  QUESTION – Is there an RFC that we can reference for the appropriate EAI validation rules to implement.</li>
-
-		    <li>Storage of e-mail attribute fields that supports internationalized characters.  NOTE – This will receive some discussion from the working group, since this falls in to implementation and not protocol.  This may get removed later.</li>
-
-		    <li>Return EAI compatible addresses for all e-mail attributes fields in the EPP responses for clients that do announce support for EAI in the login, and don’t return the optional e-mail attribute fields or return the “[EAI-ADDRESS]” predefined value for required e-mail attribute fields in the EPP responses for clients that don’t announce support for EAI in the login.  NOTE – This is a discussion point of how to handle clients that don’t announce support for EAI.  I believe it would be bad and non-compliant with the extension to return the e-mail values to non-supporting clients.  We shouldn’t require the server to determine which e-mails are EAI and either not return or return the pre-defined value for EAI values.  In the end I believe there is still the need for use of the placeholder text for non-supporting clients.</li>
-    </ul>
-
-    <t>The client obligations are:</t>
-    <ul>
-	    <li>Provide EAI compatible addresses for all e-mail attribute fields in the EPP session negotiated object-level extensions and command-response extensions.  For example the &lt;contact:email&gt; element in [RFC5733] and the &lt;org:email&gt; element in [RFC8543].  NOTE – Mirror of the first server requirement</li>
-
-	    <li> Provide EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session. NOTE – Mirror of the second server requirement</li>
-
-	    <li>Accept EAI compatible addresses in the EPP responses for all e-mail attribute fields in the EPP session negotiated object-level extensions and command-response extensions.</li>
-	    </ul>
-	    <t>
-    If neither client nor server indicated the support of the EAI address, it implies that all the attributes email in the protocol message are compliant to the specifications describing the managed object.
-	    </t>
-	    <t>
-		    The behaviour in case when one of the peers does not support the extension and the other does is defined below.
-    </t>
-    </section>
-    <section numbered="true" toc="default">
+    <section anchor="emailAddressSpec" numbered="true" toc="default">
       <name>Email Address Specification</name>
       <t>
 	Email address syntax is defined in in <xref target="RFC6530" format="default">RFC 6530</xref>.  This mapping does not
   prescribe minimum or maximum lengths for character strings used to represent email addresses.
+  TODO - I recommend pulling out elements of RFC6530 that apply to the handling of email addresses in EPP.  For example,
+  The internalized email address is associated with the format of the local part, where the domain part of the email addresses
+  can be represented using an A-label or a U-label.  The existing EPP extensions are based on the use of an ASCII local part,
+  so to support internalized email addresses, the validation needs to comply with X (section of RFC 6530) and the storage
+  needs to support multi-byte characters.
       </t>
     </section>
     <section numbered="true" toc="default">
-      <name>EPP commands mapping</name>
-      <t>A detailed description of the EPP syntax and semantics can be found
-    in the EPP core protocol specification <xref target="RFC5730" format="default"/>.</t>
-      <section anchor="queryCommands" numbered="true" toc="default">
-        <name>EPP Query Commands</name>
-        <t>EPP provides three commands to retrieve object information: &lt;check&gt; to determine
-        if an object is known to the server, &lt;info&gt; to retrieve detailed information associated
-        with an object, and &lt;transfer&gt; to retrieve object transfer status information.</t>
-        <section anchor="checkCommand" numbered="true" toc="default">
-          <name>EPP &lt;check&gt; Command</name>
-          <t>This extension does not add any elements to the EPP &lt;check&gt; command
-       or &lt;check&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
-        </section>
-        <section anchor="infoCommand" numbered="true" toc="default">
-          <name>EPP &lt;info&gt; command</name>
-          <t>This extension does not define additional elements to extend the EPP
-           &lt;info&gt; command of an EPP object mapping, but, being supported by both peers, allows using the EAI address in the response.
-           </t>
-          <t>If the query was successful, the server replies with the regular EPP &lt;resData&gt;.
-            If both peers include the "eai-0.1" XML namespace in the login services, the EAI email address is set as 
-            the email attribute using the <xref target="createCommand">create command</xref> or <xref target="updateCommand">update command</xref>,
-            then the EPP object mapping email element <bcp14>SHOULD</bcp14> be included in the response with the email address value.
-          </t>
-          <t>
-       Example &lt;info&gt; response for the authorized client:
-          </t>
-          <artwork name="" type="" align="left" alt=""><![CDATA[
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1000">
-S:      <msg>Command completed successfully</msg>
-S:    </result>
-S:    <resData>
-S:      <contact:infData
-S:        xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-S:        <contact:id>sh8013</contact:id>
-S:        <contact:roid>SH8013-REP</contact:roid>
-S:        <contact:status s="linked"/>
-S:        <contact:status s="clientDeleteProhibited"/>
-S:        <contact:postalInfo type="int">
-S:          <contact:name>John Doe</contact:name>
-S:          <contact:org>Example Inc.</contact:org>
-S:          <contact:addr>
-S:            <contact:street>123 Example Dr.</contact:street>
-S:            <contact:street>Suite 100</contact:street>
-S:            <contact:city>Dulles</contact:city>
-S:            <contact:sp>VA</contact:sp>
-S:            <contact:pc>20166-6503</contact:pc>
-S:            <contact:cc>US</contact:cc>
-S:          </contact:addr>
-S:        </contact:postalInfo>
-S:        <contact:voice x="1234">+1.7035555555</contact:voice>
-S:        <contact:fax>+1.7035555556</contact:fax>
-S:        <contact:email>someEAIaddress@example.com</contact:email>
-S:        <contact:clID>ClientY</contact:clID>
-S:        <contact:crID>ClientX</contact:crID>
-S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
-S:        <contact:upID>ClientX</contact:upID>
-S:        <contact:upDate>1999-12-03T09:00:00.0Z</contact:upDate>
-S:        <contact:trDate>2000-04-08T09:00:00.0Z</contact:trDate>
-S:        <contact:authInfo>
-S:          <contact:pw>2fooBAR</contact:pw>
-S:        </contact:authInfo>
-S:        <contact:disclose flag="0">
-S:          <contact:voice/>
-S:          <contact:email/>
-S:        </contact:disclose>
-S:      </contact:infData>
-S:    </resData>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>54322-XYZ</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>]]></artwork>
-        </section>
-        <section anchor="transferQueryCommand" numbered="true" toc="default">
-          <name>EPP &lt;transfer&gt; Command</name>
-          <t>This extension does not add any elements to the EPP &lt;transfer&gt; query command
-       or &lt;transfer&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
-        </section>
-      </section>
-      <section anchor="transformCommands" numbered="true" toc="default">
-        <name>EPP Transform Commands</name>
-        <t>EPP provides five commands to transform objects: &lt;create&gt; to create an instance of an object,
-      &lt;delete&gt; to delete an instance of an object, &lt;renew&gt; to extend the validity period of an object,
-      &lt;transfer&gt; to manage object sponsorship changes, and &lt;update&gt; to change information associated
-      with an object.</t>
-        <section anchor="createCommand" numbered="true" toc="default">
-          <name>EPP &lt;create&gt; command</name>
-          <t>This extension allows using the EAI email addresses in the EPP
-             &lt;create&gt; command of an object mapping like the
-             <xref target="RFC5733">EPP contact mapping</xref></t>
+      <name>Functional Extension</name>
+      <t>
+        <xref target="RFC5730" format="default"/> defines three types of extensions at the protocol, object, and command-response level, which impact the structure of the EPP messages.  A Functional Extension
+        applies a functional capability to an existing set of EPP extensions and properties.  The scope of the applicable EPP extensions and applicable extension properties are defined in the Functional Extension along with the
+        requiremenets for the servers and clients that support it.  The Functional Extension needs to cover the expected behavior of the supporting client or server when interfacing with an unsupporting client or server.
+        Negotiating support for a Functional Extension is handled using the EPP Greeting and EPP Login services.</t>
+      <t>
+    </section>
 
-     <t>The EPP &lt;create&gt; command provides a transform operation that allows a client to create an object.
-          This extension does not define additional elements to extend the EPP
-           &lt;create&gt; command of an EPP object mapping, but, being supported by both peers, allows using the EAI address in the request.
-	     </t>
-          <t>
-       Example &lt;create&gt; command:
-          </t>
-          <artwork name="" type="" align="left" alt=""><![CDATA[
-C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-C:  <command>
-C:    <create>
-C:      <contact:create
-C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-C:        <contact:id>sh8013</contact:id>
-C:        <contact:postalInfo type="int">
-C:          <contact:name>John Doe</contact:name>
-C:          <contact:org>Example Inc.</contact:org>
-C:          <contact:addr>
-C:            <contact:street>123 Example Dr.</contact:street>
-C:            <contact:street>Suite 100</contact:street>
-C:            <contact:city>Dulles</contact:city>
-C:            <contact:sp>VA</contact:sp>
-C:            <contact:pc>20166-6503</contact:pc>
-C:            <contact:cc>US</contact:cc>
-C:          </contact:addr>
-C:        </contact:postalInfo>
-C:        <contact:voice x="1234">+1.7035555555</contact:voice>
-C:        <contact:fax>+1.7035555556</contact:fax>
-C:        <contact:email>someEAIaddress@example.com</contact:email>
-C:        <contact:authInfo>
-C:          <contact:pw>2fooBAR</contact:pw>
-C:        </contact:authInfo>
-C:        <contact:disclose flag="0">
-C:          <contact:voice/>
-C:          <contact:email/>
-C:        </contact:disclose>
-C:      </contact:create>
-C:    </create>
-C:    <clTRID>ABC-12345</clTRID>
-C:  </command>
-C:</epp>]]></artwork>
-        </section>
-        <section anchor="deleteCommand" numbered="true" toc="default">
-          <name>EPP &lt;delete&gt; Command</name>
-          <t>This extension does not add any elements to the EPP &lt;delete&gt; command
-       or &lt;delete&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
-        </section>
-        <section anchor="renewCommand" numbered="true" toc="default">
-          <name>EPP &lt;renew&gt; Command</name>
-          <t>This extension does not add any elements to the EPP &lt;renew&gt; command
-       or &lt;renew&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
-        </section>
-        <section anchor="transferCommand" numbered="true" toc="default">
-          <name>EPP &lt;transfer&gt; Command</name>
-          <t>This extension does not add any elements to the EPP &lt;transfer&gt; command
-       or &lt;transfer&gt; response described in the <xref target="RFC5730" format="default"/>.</t>
-        </section>
-        <section anchor="updateCommand" numbered="true" toc="default">
-          <name>EPP &lt;update&gt; command</name>
-            <t>The EPP &lt;update&gt; command provides a transform operation that allows a client to update an object.
-          This extension does not define additional elements to extend the EPP
-           &lt;update&gt; command of an EPP object mapping, but, being supported by both peers, allows using the EAI address in the request.
-               </t>
-          <t>
-         Example &lt;update&gt; command:
-          </t>
-          <artwork name="" type="" align="left" alt=""><![CDATA[
-C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-C:  <command>
-C:    <update>
-C:      <contact:update
-C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
-C:        <contact:id>sh8013</contact:id>
-C:        <contact:chg>
-C:          <contact:email>someEAIaddress@example.com</contact:email>
-C:        </contact:chg>
-C:      </contact:update>
-C:    </update>
-C:    <clTRID>ABC-12345</clTRID>
-C:  </command>
-C:</epp>]]></artwork>
-        </section>
+    <section numbered="true" toc="default">
+      <name>Internationalized Email Addresses (EAI) Functional Extension</name>
+      <section numbered="true" toc="default">
+  	    <name>Scope of Functional Extension</name>
+  	    <t>
+           The functional extension applies to all object extensions and command-response extensions negotiated in the EPP session that include email address properties.
+           Examples include the &lt;contact:email&gt; element in the <xref target="RFC5733" format="default">EPP contact mapping</xref> or
+           the &lt;org:email&gt; element in the <xref target="RFC8543" format="default">EPP organization mapping</xref>.  All registry zones (e.g., top-level domains) authorized
+           for the client in the EPP session apply.  There is no concept of a per-client, per-zone, per-extension, or per-field setting that is used to indicate
+           support for EAI, but instead it's a global setting that applies to the EPP session.
+  	    </t>
       </section>
+      <section numbered="true" toc="default">
+  	    <name>Signaling Client and Server Support</name>
+  	    <t>
+           The client and the
+           server can signal support for the functional extension using a
+           namespace URI in the login and greeting extension services.  The
+           namespace URI "eai-0.2"
+           is used to signal support for the functional extension.  The client
+           includes the namespace URI in an &lt;svcExtension&gt; &lt;extURI&gt; element of
+           the <xref target="RFC5730" format="default"/> &lt;login&gt; Command.  The server includes the namespace URI
+           in an &lt;svcExtension&gt; &lt;extURI&gt; element of the <xref target="RFC5730" format="default"/> Greeting.
+  	    </t>
+      </section>
+      <section numbered="true" toc="default">
+  	    <name>Functional Extension Behavior</name>
+          <section numbered="true" toc="default">
+      	    <name>EAI Functional Extension Negotiated</name>
+            <t>
+      		    If both client and server have indicated the support of the EAI addresses during the session establishment, it implies possibility to process the EAI address in any message having an email property during the established EPP session.
+              Below are the server and client obligations when the EAI extension has been successfuly negotiated in the EPP session.
+      	    </t>
+      	    <t>The server MUST satisfy the following obligations when THE EAI extension has been negotiated:</t>
+      		    <ul>
+      		    <li>Accept EAI compatible addresses for all email properties in the EPP session negotiated object extensions and command-response extensions.
+                For example the &lt;contact:email&gt; element in <xref target="RFC5733" format="default"/> and the &lt;org:email&gt; element in <xref target="RFC8543" format="default"/>.</li>
+
+      		    <li>Accept EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
+
+      		    <li>Email address validation based on EAI validation rules defined in <xref target="emailAddressSpec" format="default"/></li>
+
+      		    <li>Storage of email properties that supports internationalized characters.</li>
+
+      		    <li>Return EAI compatible addresses for all email properties in the EPP responses.</li>
+          </ul>
+
+          <t>The server MUST satisfy the following obligations when THE EAI extension has been negotiated:</t>
+          <ul>
+      	    <li>Provide EAI compatible addresses for all e-mail attribute fields in the EPP session negotiated object extensions and command-response extensions.  For example the &lt;contact:email&gt; element in <xref target="RFC5733" format="default"/> and the &lt;org:email&gt; element in <xref target="RFC8543" format="default"/>.</li>
+
+      	    <li>Provide EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
+
+      	    <li>Accept EAI compatible addresses in the EPP responses for all email properties in the EPP session negotiated object extensions and command-response extensions.</li>
+      	  </ul>
+        </section>
+
+        <section numbered="true" toc="default">
+          <name>EAI Functional Extension Not Negotiated</name>
+          <t>
+            The lack of EAI support can cause data and functional issues, so an EAI supporting client or server needs to handle cases where the opposite party doesn't support EAI.
+            Below are the server and client obligations when the EAI extension is not negotiated due to either lack of support by the opposite party.
+          </t>
+          <t>The EAI supporting server MUST satisfy the following obligations when the client does not support the EAI extension:</t>
+            <ul>
+              <li>When the email property is required in the EPP extension command, the server SHOULD validate the email property by the client using the ASCII email validation rules.</li>
+
+              <li>When the email property is optional according the EPP extension command, if the client supplies the email property the server SHOULD validate the email property using the ASCII email validation rules.</li>
+
+              <li>When the email property is required in the EPP extension response, the server MUST validate whether the email property is an EAI address and if so return the predefined placeholder email TBD and otherwise return the email property that has been set.</t>
+
+              <li>When the email property is optional in the EPP extension respoonse, the server MUST validate whether the email property is an EAI address and if so don't return the email property in the respoonse and otherwise return the email property that has been set based on server policy.</t>
+            </ul>
+
+            <t>The EAI supporting client MUST satisfy the following obligations when the server does not support the EAI extension:</t>
+              <ul>
+
+                <li>When the email property is required in the EPP extension command and the email property is an EAI address with no alternative ASCII address, the client MUST provide the predefined placeholder mail TBD.</li>
+
+                <li>When the email property is optional in the EPP extension command and the email property is an EAI address with no alternative ASCII address, the client SHOULD omit the email property.</li>
+
+              </ul>
+
+
+        </section>
+
     </section>
-    <section numbered="true" toc="default">
-	    <name>Recommended behaviour in case of mismatch of support</name>
-    <section numbered="true" toc="default">
-	    <name>Client supports the extension, server does not support</name>
-	    <t>
-	    When the email Element is Required according to schema, client supports the extension, and server does not support the extension, if the client does not have an alternative email, then client SHOULD provide a pre-defined placeholder value that will pass the server validation.
-	    </t>
-	    <t>
-	    When the email Element is Optional according to schema, client supports the extension, and server does not support the extension, if the client does not have an alternative email, then client SHOULD omit the email Element.
-    </t>
-    </section>
-    <section numbered="true" toc="default">
-	    <name>Server supports the extension, client does not support</name>
-	    <section>
-		    <name>When Client is the Sponsoring Client</name>
-	    <section>
-		    <name>Transform commands</name>
-	    <t>
-	    When the email Element is Required according to schema, client does not support the extension, and server supports the extension, server SHOULD validate the email Element using the ASCII E-mail validation rules.
-	    When the email Element is Optional according to schema, client does not support the extension, and server supports the extension, if the client provided the email Element, server SHOULD validate the email Element using the ASCII E-mail validation rules.
-	    </t>
-	    </section>
-	    <section>
-		    <name>Info command</name>
-		    <t>
-When email Element is Required, either the value set is returned or a pre-defined EAI placeholder value is returned. The majority of the case, the value was set by the current sponsoring client, so there should be no issue returning the set value.  After a successful transfer, the EAI address may be present in the object. In this case, server SHOULD return the predefined placeholder email. When E-mail Element is Optional, the requirements are similar to the case when it is Required.
-	    </t>
-	    </section>
-	    </section>
-	    <section>
-		    <name>When Client is non-Sponsoring Client</name>
-	    <t>
-When email Element is Required, either the value set is returned or a pre-defined EAI placeholder value is returned. The majority of the case, the value was set by the current sponsoring client, so there should be no issue returning the set value.  After a successful transfer, the EAI address may be present in the object. In this case, server SHOULD return the predefined placeholder email. When E-mail Element is Optional, the empty email Element SHOULD be returned.
-Server Supports EAI and Client Does Not Support EAI
-    	</t>
-	    </section>
-    </section>
-    </section>
+
     <section numbered="true" toc="default">
       <name>Security Considerations</name>
       <t>
@@ -397,13 +219,13 @@ Server Supports EAI and Client Does Not Support EAI
    following URI assignment should be made by IANA:</t>
         <t> Registration request for the eai namespace:</t>
         <artwork name="" type="" align="left" alt=""><![CDATA[
-   URI:  urn:ietf:params:xml:ns:epp:eai-0.1
+   URI:  urn:ietf:params:xml:ns:epp:eai-0.2
    Registrant Contact:  IESG
    XML:  None.  Namespace URIs do not represent an XML specification.
 
    Registration request for the eai XML Schema:
 
-   URI:  urn:ietf:params:xml:schema:epp:eai-0.1
+   URI:  urn:ietf:params:xml:schema:epp:eai-0.2
    Registrant Contact:  IESG
    XML:  See the "Formal Syntax" section of this document.
 ]]></artwork>
@@ -444,7 +266,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
           <front>
             <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-            <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+            <seriesInfo name="DOI" value="10.27487/RFC2119"/>
             <seriesInfo name="RFC" value="2119"/>
             <seriesInfo name="BCP" value="14"/>
             <author initials="S." surname="Bradner" fullname="S. Bradner">
@@ -459,7 +281,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC3688" target="https://www.rfc-editor.org/info/rfc3688" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml">
           <front>
             <title>The IETF XML Registry</title>
-            <seriesInfo name="DOI" value="10.17487/RFC3688"/>
+            <seriesInfo name="DOI" value="10.27487/RFC3688"/>
             <seriesInfo name="RFC" value="3688"/>
             <seriesInfo name="BCP" value="81"/>
             <author initials="M." surname="Mealling" fullname="M. Mealling">
@@ -474,7 +296,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC3735" target="https://www.rfc-editor.org/info/rfc3735" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3735.xml">
           <front>
             <title>Guidelines for Extending the Extensible Provisioning Protocol (EPP)</title>
-            <seriesInfo name="DOI" value="10.17487/RFC3735"/>
+            <seriesInfo name="DOI" value="10.27487/RFC3735"/>
             <seriesInfo name="RFC" value="3735"/>
             <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
               <organization/>
@@ -488,7 +310,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC5730" target="https://www.rfc-editor.org/info/rfc5730" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml">
           <front>
             <title>Extensible Provisioning Protocol (EPP)</title>
-            <seriesInfo name="DOI" value="10.17487/RFC5730"/>
+            <seriesInfo name="DOI" value="10.27487/RFC5730"/>
             <seriesInfo name="RFC" value="5730"/>
             <seriesInfo name="STD" value="69"/>
             <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
@@ -503,7 +325,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC5733" target="https://www.rfc-editor.org/info/rfc5733" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5733.xml">
           <front>
             <title>Extensible Provisioning Protocol (EPP) Contact Mapping</title>
-            <seriesInfo name="DOI" value="10.17487/RFC5733"/>
+            <seriesInfo name="DOI" value="10.27487/RFC5733"/>
             <seriesInfo name="RFC" value="5733"/>
             <seriesInfo name="STD" value="69"/>
             <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
@@ -518,7 +340,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC6530" target="https://www.rfc-editor.org/info/rfc6530" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6530.xml">
           <front>
             <title>Overview and Framework for Internationalized Email</title>
-            <seriesInfo name="DOI" value="10.17487/RFC6530"/>
+            <seriesInfo name="DOI" value="10.27487/RFC6530"/>
             <seriesInfo name="RFC" value="6530"/>
             <author initials="J." surname="Klensin" fullname="J. Klensin">
               <organization/>
@@ -535,7 +357,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC7451" target="https://www.rfc-editor.org/info/rfc7451" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7451.xml">
           <front>
             <title>Extension Registry for the Extensible Provisioning Protocol</title>
-            <seriesInfo name="DOI" value="10.17487/RFC7451"/>
+            <seriesInfo name="DOI" value="10.27487/RFC7451"/>
             <seriesInfo name="RFC" value="7451"/>
             <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
               <organization/>
@@ -549,7 +371,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
           <front>
             <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
-            <seriesInfo name="DOI" value="10.17487/RFC8174"/>
+            <seriesInfo name="DOI" value="10.27487/RFC8174"/>
             <seriesInfo name="RFC" value="8174"/>
             <seriesInfo name="BCP" value="14"/>
             <author initials="B." surname="Leiba" fullname="B. Leiba">
@@ -567,7 +389,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC5892" target="https://www.rfc-editor.org/info/rfc5892" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5892.xml">
           <front>
             <title>The Unicode Code Points and Internationalized Domain Names for Applications (IDNA)</title>
-            <seriesInfo name="DOI" value="10.17487/RFC5892"/>
+            <seriesInfo name="DOI" value="10.27487/RFC5892"/>
             <seriesInfo name="RFC" value="5892"/>
             <author initials="P." surname="Faltstrom" fullname="P. Faltstrom" role="editor">
               <organization/>
@@ -582,7 +404,7 @@ Server Supports EAI and Client Does Not Support EAI
         <reference anchor="RFC8543" target="https://www.rfc-editor.org/info/rfc8543" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8543.xml">
           <front>
             <title>Extensible Provisioning Protocol (EPP) Organization Mapping</title>
-            <seriesInfo name="DOI" value="10.17487/RFC8543"/>
+            <seriesInfo name="DOI" value="10.27487/RFC8543"/>
             <seriesInfo name="RFC" value="8543"/>
             <author initials="L." surname="Zhou" fullname="L. Zhou">
               <organization/>
@@ -623,7 +445,7 @@ Server Supports EAI and Client Does Not Support EAI
           <li>Updated the language to apply to any EPP object mapping and to use the EPP contact mapping as an example.</li>
           <li>Updated the structure of document to be consistent with the other Command-Response Extensions.</li>
           <li>Replaced the use of "eppEAI" in the XML namespace and the XML namespace prefix with "eai".</li>
-          <li>Changed to use a pointed XML namespace with "0.1" instead of "1.0".</li>
+          <li>Changed to use a pointed XML namespace with "0.2" instead of "1.0".</li>
         </ol>
       </section>
       <section anchor="change-02-to-03" numbered="true" toc="default">
