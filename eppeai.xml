@@ -1,13 +1,21 @@
 <?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE rfc SYSTEM "rfc2629-xhtml.ent">
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-belyavskiy-epp-eai-02"
+<!DOCTYPE rfc SYSTEM "rfc2629-xhtml.ent" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced.
+     An alternate method (rfc include) is described in the references. -->
+<!ENTITY RFC5321 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5321.xml">
+<!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
+<!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
+<!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
+]>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-belyavskiy-epp-eai-04"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in EPP protocol</title>
-    <seriesInfo name="Internet-Draft" value="draft-belyavskiy-epp-eai-03"/>
+    <seriesInfo name="Internet-Draft" value="draft-belyavskiy-epp-eai-04"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -34,7 +42,7 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-    <date month="February" year="2021" day="17"/>
+    <date month="February" year="2021" day="22"/>
     <abstract>
       <t>
    This document describes an EPP extension that permits usage of Internationalized Email Addresses in the EPP protocol
@@ -57,8 +65,7 @@
    This document describes an Extensible Provisioning Protocol (EPP) extension that permits usage of Internationalized Email Addresses in the EPP protocol
    and specifies the terms when it can be used by EPP clients and servers.  A new form of EPP extension, referred to as a Functional Extension, is defined and used
    to apply the rules for the handling of email address elements in all of the <xref target="RFC5730" format="default"/> extensions negotiated in the EPP session,
-   which include the object and command-responses extensions. The described mechanism can be applied to any object or command-response extension that uses an email address,
-   where the <xref target="RFC5733" format="default">EPP contact mapping</xref> is used in the examples.
+   which include the object and command-responses extensions. The described mechanism can be applied to any object or command-response extension that uses an email address.
       </t>
       <t>
 	The Extensible Provisioning Protocol (EPP) specified in <xref target="RFC5730" format="default"/>
@@ -75,12 +82,6 @@
   "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
   as described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/> when, and only when,
   they appear in all capitals, as shown here.</t>
-        <t>
-	"eai-0.2" is used as an abbreviation for "urn:ietf:params:xml:ns:epp:eai-0.2".
-   The XML namespace prefix "eai" is used, but implementations <bcp14>MUST NOT</bcp14> depend on it.
-   Instead, they are to employ a proper namespace-aware XML parser and
-   serializer to interpret and output the XML documents.
-        </t>
       </section>
     </section>
     <section numbered="true" toc="default">
@@ -96,7 +97,23 @@
     <section anchor="emailAddressSpec" numbered="true" toc="default">
       <name>Email Address Specification</name>
       <t>
-	      Support of non-ASCII email address syntax is defined in <xref target="RFC6530" format="default">RFC 6530</xref>. This mapping does not prescribe minimum or maximum lengths for character strings used to represent email addresses. The exact syntax of such addresses is described in <xref target="RFC6531" format="default" /> section 3.3. The validation rules introduced in RFC 6531 are considered to be followed.
+	      Support of non-ASCII email address syntax is defined in <xref target="RFC6530" format="default">RFC 6530</xref>. This mapping does not prescribe minimum or maximum lengths for character strings used to represent email addresses.
+        The exact syntax of such addresses is described in Section 3.3 of <xref target="RFC6531" format="default"/>. The validation rules introduced in RFC 6531 are considered to be followed.
+      </t>
+      <t>
+        The definition of email address in the EPP RFCs, including Section 2.6 of <xref target="RFC5733" format="default"/> and
+        Section 4.1.2, 4.2.1, and 4.2.5 of <xref target="RFC8543" format="default"/>, references <xref target="RFC5322" format="default"/> for the email address syntax.  The XML schema
+        definition in Section 4 of <xref target="RFC5733" format="default"/> and Section 5 of <xref target="RFC8543" format="default"/> defines the "email" element using the type "eppcom:minTokenType",
+        which is defined in Section 4.2 of <xref target="RFC5730" format="default"/> as an XML schema "token" type with minimal length of one.  The XML schema "token" type will fully support the use
+        of EAI addresses, so the primary application of the EAI extension is to apply the use of <xref target="RFC6531" format="default"/> instead of <xref target="RFC5322" format="default"/> for
+        the email address syntax.  Other EPP extensions may follow the formal syntax definition using the XML schema type "eppcom:minTokenType" and the <xref target="RFC5322" format="default"/> format specification,
+        where this extension applies to all EPP extensions with the same or similar definitions.
+      </t>
+      <t>
+        The email address format is formally defined in Section 3.4.1 of <xref target="RFC5322" format="default"/>, which only consists of printable US-ASCII characters for both the local-part and the domain ABNF rules.
+        In <xref target="RFC6531" format="default"/>, the extends the Mailbox, Local-part and Domain ABNF rules in <xref target="RFC5321" format="default"/> to support "UTF8-non-ascii", defined in Section 3.1 of <xref target="RFC6532" format="default"/>, for the local-part and
+        U-label, defined in Section 2.3.2.1 of <xref target="RFC5890" format="default"/>, for the domain.  By applying the syntax rules of <xref target="RFC5322" format="default"/>, the EPP extensions will
+        change from supporting only ASCII characters to supporting Internationailzed characters in the email address local-part and domain-part.
       </t>
     </section>
     <section numbered="true" toc="default">
@@ -126,7 +143,7 @@
            The client and the
            server can signal support for the functional extension using a
            namespace URI in the login and greeting extension services.  The
-           namespace URI "eai-0.2"
+           namespace URI "urn:ietf:params:xml:ns:epp:eai-0.2"
            is used to signal support for the functional extension.  The client
            includes the namespace URI in an &lt;svcExtension&gt; &lt;extURI&gt; element of
            the <xref target="RFC5730" format="default"/> &lt;login&gt; Command.  The server includes the namespace URI
@@ -141,7 +158,7 @@
       		    If both client and server have indicated the support of the EAI addresses during the session establishment, it implies possibility to process the EAI address in any message having an email property during the established EPP session.
               Below are the server and client obligations when the EAI extension has been successfuly negotiated in the EPP session.
       	    </t>
-      	    <t>The server MUST satisfy the following obligations when THE EAI extension has been negotiated:</t>
+      	    <t>The server MUST satisfy the following obligations when the EAI extension has been negotiated:</t>
       		    <ul>
       		    <li>Accept EAI compatible addresses for all email properties in the EPP session negotiated object extensions and command-response extensions.
                 For example the &lt;contact:email&gt; element in <xref target="RFC5733" format="default"/> and the &lt;org:email&gt; element in <xref target="RFC8543" format="default"/>.</li>
@@ -157,7 +174,7 @@
 
           <t>The server MUST satisfy the following obligations when THE EAI extension has been negotiated:</t>
           <ul>
-      	    <li>Provide EAI compatible addresses for all e-mail attribute fields in the EPP session negotiated object extensions and command-response extensions.  For example the &lt;contact:email&gt; element in <xref target="RFC5733" format="default"/> and the &lt;org:email&gt; element in <xref target="RFC8543" format="default"/>.</li>
+      	    <li>Provide EAI compatible addresses for all e-mail properties in the EPP session negotiated object extensions and command-response extensions.  For example the &lt;contact:email&gt; element in <xref target="RFC5733" format="default"/> and the &lt;org:email&gt; element in <xref target="RFC8543" format="default"/>.</li>
 
       	    <li>Provide EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
 
@@ -169,7 +186,7 @@
           <name>EAI Functional Extension Not Negotiated</name>
           <t>
             The lack of EAI support can cause data and functional issues, so an EAI supporting client or server needs to handle cases where the opposite party doesn't support EAI.
-            Below are the server and client obligations when the EAI extension is not negotiated due to either lack of support by the opposite party.
+            Below are the server and client obligations when the EAI extension is not negotiated due to the lack of support by the opposite party.
           </t>
           <t>The EAI supporting server MUST satisfy the following obligations when the client does not support the EAI extension:</t>
             <ul>
@@ -287,20 +304,8 @@
             </abstract>
           </front>
         </reference>
-        <reference anchor="RFC3735" target="https://www.rfc-editor.org/info/rfc3735" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3735.xml">
-          <front>
-            <title>Guidelines for Extending the Extensible Provisioning Protocol (EPP)</title>
-            <seriesInfo name="DOI" value="10.27487/RFC3735"/>
-            <seriesInfo name="RFC" value="3735"/>
-            <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
-              <organization/>
-            </author>
-            <date year="2004" month="March"/>
-            <abstract>
-              <t>The Extensible Provisioning Protocol (EPP) is an application layer client-server protocol for the provisioning and management of objects stored in a shared central repository.  Specified in XML, the protocol defines generic object management operations and an extensible framework that maps protocol operations to objects.  This document presents guidelines for use of EPP's extension mechanisms to define new features and object management capabilities.  This memo provides information for the Internet community.</t>
-            </abstract>
-          </front>
-        </reference>
+        &RFC5321;
+        &RFC5322;
         <reference anchor="RFC5730" target="https://www.rfc-editor.org/info/rfc5730" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml">
           <front>
             <title>Extensible Provisioning Protocol (EPP)</title>
@@ -331,6 +336,7 @@
             </abstract>
           </front>
         </reference>
+        &RFC5890;
         <reference anchor="RFC6530" target="https://www.rfc-editor.org/info/rfc6530" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6530.xml">
           <front>
             <title>Overview and Framework for Internationalized Email</title>
@@ -365,6 +371,7 @@
 <seriesInfo name="RFC" value="6531"/>
 <seriesInfo name="DOI" value="10.17487/RFC6531"/>
 </reference>
+&RFC6532;
         <reference anchor="RFC7451" target="https://www.rfc-editor.org/info/rfc7451" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7451.xml">
           <front>
             <title>Extension Registry for the Extensible Provisioning Protocol</title>
@@ -464,6 +471,13 @@
 	<ol spacing="normal" type="1">
 	  <li>The approach has changed to use the concept of Functional EPP Extension.</li>
 	  <li>The examples are removed</li>
+        </ol>
+      </section>
+      <section anchor="change-03-to-04" numbered="true" toc="default">
+        <name>Change from 03 to 04</name>
+	<ol spacing="normal" type="1">
+	  <li>More detailed reference to email syntax is provided</li>
+	  <li>The shortened eai namespace reference is removed</li>
         </ol>
       </section>
     </section>
