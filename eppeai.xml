@@ -8,14 +8,14 @@
 <!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
 <!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-02"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-03"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in EPP protocol</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-02"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-03"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -142,7 +142,7 @@
   	    <t>
            The client and the server can signal support for the functional extension using a
            namespace URI in the login and greeting extension services respectively.  The
-           namespace URI "urn:ietf:params:xml:ns:epp:eai-0.2" is used to signal support for the functional extension.
+           namespace URI "urn:ietf:params:xml:ns:epp:eai-0.3" is used to signal support for the functional extension.
 	   The client includes the namespace URI in an &lt;svcExtension&gt; &lt;extURI&gt; element of
            the <xref target="RFC5730" format="default"/> &lt;login&gt; Command.  The server includes the namespace URI
            in an &lt;svcExtension&gt; &lt;extURI&gt; element of the <xref target="RFC5730" format="default"/> Greeting.
@@ -186,16 +186,19 @@
           </t>
           <t>The EAI supporting server MUST satisfy the following obligations when the client does not support the EAI extension:</t>
             <ul>
-              <li>When the email property is required in the EPP response, the server SHOULD validate the email property sent by the client using the ASCII email validation rules.</li>
-              <li>When the email property is optional according the EPP response, if the client supplies the email property the server SHOULD validate the email property using the ASCII email validation rules.</li>
-              <li>When the email property is required in the EPP response, the server MUST validate whether the email property is an EAI address and if so return the error code 2308 "Data management policy violation" and otherwise return the email property that has been set.</li>
-              <li>When the email property is optional in the EPP response, the server MUST validate whether the email property is an EAI address and if so don't return the email property in the response and otherwise return the email property that has been set based on server policy.</li>
+              <li>When the email property is required in the EPP command, the server SHOULD validate the email property sent by the client using the ASCII email validation rules.</li>
+              <li>When the email property is optional in the EPP command, if the client supplies the email property the server SHOULD validate the email property using the ASCII email validation rules.</li>
+              <li>When the email property is required in the EPP response, the server MUST validate whether the email property is an EAI address and if so return the error code 2308 "Data management policy violation".</li>
+              <li>When the email property is optional in the EPP response, the server MUST validate whether the email property is an EAI address and if so don't return the email property in the response.</li>
             </ul>
 
             <t>The EAI supporting client MUST satisfy the following obligations when the server does not support the EAI extension:</t>
               <ul>
-                <li>When the email property is required in the EPP request and the email property is an EAI address, the client MUST provide the ASCII email address.  The provided email address should provide a way to contact the registrant. It can be a secondary ASCII email address or registrar-provided proxy email address.</li>
-                <li>When the email property is optional in the EPP request and the email property is an EAI address with no alternative ASCII address, the client SHOULD omit the email property.</li>
+                <li>When the email property is required in the EPP command and the email property is an EAI address, the client MUST provide an ASCII email address.  The provided email address should provide a way to contact the registrant. It can be a secondary ASCII email address or registrar-provided proxy email address.</li>
+		<li>When the email property is optional in the EPP command and the email property is an EAI address with no alternative ASCII address, the client SHOULD omit the email property. If
+the email property is provided, the client MUST provide an ASCII email address. The provided email address should provide a way to contact the registrant. It can be a secondary ASCII email
+address or registrar-provided proxy email address.
+	</li>
               </ul>
         </section>
       </section>
@@ -217,13 +220,13 @@
    following URI assignment should be made by IANA:</t>
         <t> Registration request for the eai namespace:</t>
         <artwork name="" type="" align="left" alt=""><![CDATA[
-   URI:  urn:ietf:params:xml:ns:epp:eai-0.2
+   URI:  urn:ietf:params:xml:ns:epp:eai-0.3
    Registrant Contact:  IESG
    XML:  None.  Namespace URIs do not represent an XML specification.
 
    Registration request for the eai XML Schema:
 
-   URI:  urn:ietf:params:xml:schema:epp:eai-0.2
+   URI:  urn:ietf:params:xml:schema:epp:eai-0.3
    Registrant Contact:  IESG
    XML:  See the "Formal Syntax" section of this document.
 ]]></artwork>
@@ -477,6 +480,13 @@
         <name>Change from the regext 01 to regext 02 version</name>
 	<ol spacing="normal" type="1">
 	  <li>Removed the concept of the placeholder value</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-02-to-ietf-03" numbered="true" toc="default">
+        <name>Change from the regext 02 to regext 03 version</name>
+	<ol spacing="normal" type="1">
+          <li>Changed to use a pointed XML namespace with "0.3" instead of "0.2".</li>
+	  <li>Some wording improvements</li>
         </ol>
       </section>
     </section>
