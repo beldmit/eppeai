@@ -14,7 +14,7 @@
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
-    <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in EPP protocol</title>
+    <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
     <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-03"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
@@ -42,7 +42,7 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-    <date month="August" year="2021" day="08"/>
+    <date month="August" year="2021" day="13"/>
     <abstract>
       <t>
    This document describes an EPP extension that permits usage of Internationalized Email Addresses in the EPP protocol
@@ -189,7 +189,7 @@
               <li>When the email property is required in the EPP command, the server SHOULD validate the email property sent by the client using the ASCII email validation rules.</li>
               <li>When the email property is optional in the EPP command, if the client supplies the email property the server SHOULD validate the email property using the ASCII email validation rules.</li>
               <li>When the email property is required in the EPP response, the server MUST validate whether the email property is an EAI address and if so return the error code 2308 "Data management policy violation".</li>
-              <li>When the email property is optional in the EPP response, the server MUST validate whether the email property is an EAI address and if so don't return the email property in the response.</li>
+              <li>When the email property is optional in the EPP response and is provided, the server MUST validate whether the email property is an EAI address and if so return the error code 2308 "Data management policy violation".</li>
             </ul>
 
             <t>The EAI supporting client MUST satisfy the following obligations when the server does not support the EAI extension:</t>
