@@ -7,15 +7,16 @@
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
 <!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
 <!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
+<!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-03"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-08"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-03"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-08"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -42,7 +43,7 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-    <date month="August" year="2021" day="13"/>
+    <date month="April" year="2022" day="03"/>
     <abstract>
       <t>
    This document describes an EPP extension that permits usage of Internationalized Email Addresses in the EPP protocol
@@ -97,7 +98,7 @@
     <section anchor="emailAddressSpec" numbered="true" toc="default">
       <name>Email Address Specification</name>
       <t>
-	      Support of non-ASCII email address syntax is defined in <xref target="RFC6530" format="default">RFC 6530</xref>. This mapping does not prescribe minimum or maximum lengths for character strings used to represent email addresses.
+      Support of non-ASCII email address syntax is defined in <xref target="RFC6530" format="default">RFC 6530</xref>. This mapping does not prescribe minimum or maximum lengths for character strings used to represent email addresses.
         The exact syntax of such addresses is described in Section 3.3 of <xref target="RFC6531" format="default"/>. The validation rules introduced in RFC 6531 are considered to be followed.
       </t>
       <t>
@@ -111,9 +112,9 @@
       </t>
       <t>
         The email address format is formally defined in Section 3.4.1 of <xref target="RFC5322" format="default"/>, which only consists of printable US-ASCII characters for both the local-part and the domain ABNF rules.
-        In <xref target="RFC6531" format="default"/>, the extends the Mailbox, Local-part and Domain ABNF rules in <xref target="RFC5321" format="default"/> to support "UTF8-non-ascii", defined in Section 3.1 of <xref target="RFC6532" format="default"/>, for the local-part and
+        <xref target="RFC6531" format="default"/> extends the Mailbox, Local-part and Domain ABNF rules in <xref target="RFC5321" format="default"/> to support "UTF8-non-ascii", defined in Section 3.1 of <xref target="RFC6532" format="default"/>, for the local-part and
         U-label, defined in Section 2.3.2.1 of <xref target="RFC5890" format="default"/>, for the domain.  By applying the syntax rules of <xref target="RFC5322" format="default"/>, the EPP extensions will
-        change from supporting only ASCII characters to supporting Internationailzed characters both in the email address local-part and domain-part.
+        change from supporting only ASCII characters to supporting Internationalized characters both in the email address local-part and domain-part.
       </t>
     </section>
     <section numbered="true" toc="default">
@@ -142,7 +143,7 @@
   	    <t>
            The client and the server can signal support for the functional extension using a
            namespace URI in the login and greeting extension services respectively.  The
-           namespace URI "urn:ietf:params:xml:ns:epp:eai-0.3" is used to signal support for the functional extension.
+           namespace URI "urn:ietf:params:xml:ns:epp:eai-1.0" is used to signal support for the functional extension.
 	   The client includes the namespace URI in an &lt;svcExtension&gt; &lt;extURI&gt; element of
            the <xref target="RFC5730" format="default"/> &lt;login&gt; Command.  The server includes the namespace URI
            in an &lt;svcExtension&gt; &lt;extURI&gt; element of the <xref target="RFC5730" format="default"/> Greeting.
@@ -164,7 +165,7 @@
 
 	    <li>Accept EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
 	    <li>Email address validation based on EAI validation rules defined in <xref target="emailAddressSpec" format="default"/></li>
-	    <li>Storage of email properties that supports internationalized characters.</li>
+	    <li>Storage of email properties that support internationalized characters.</li>
 	    <li>Return EAI compatible addresses for all email properties in the EPP responses.</li>
           </ul>
 
@@ -205,13 +206,6 @@ address or registrar-provided proxy email address.
     </section>
 
     <section numbered="true" toc="default">
-      <name>Security Considerations</name>
-      <t>
-	Registries <bcp14>SHOULD</bcp14> validate the domain names in the provided email addresses.
-	This can be done by validating all code points according to IDNA2008 <xref target="RFC5892" format="default"/>.
-      </t>
-    </section>
-    <section numbered="true" toc="default">
       <name>IANA Considerations</name>
       <section numbered="true" toc="default">
         <name>XML Namespace</name>
@@ -220,13 +214,13 @@ address or registrar-provided proxy email address.
    following URI assignment should be made by IANA:</t>
         <t> Registration request for the eai namespace:</t>
         <artwork name="" type="" align="left" alt=""><![CDATA[
-   URI:  urn:ietf:params:xml:ns:epp:eai-0.3
+   URI:  urn:ietf:params:xml:ns:epp:eai-1.0
    Registrant Contact:  IESG
    XML:  None.  Namespace URIs do not represent an XML specification.
 
    Registration request for the eai XML Schema:
 
-   URI:  urn:ietf:params:xml:schema:epp:eai-0.3
+   URI:  urn:ietf:params:xml:schema:epp:eai-1.0
    Registrant Contact:  IESG
    XML:  See the "Formal Syntax" section of this document.
 ]]></artwork>
@@ -252,11 +246,66 @@ address or registrar-provided proxy email address.
 ]]></artwork>
       </section>
     </section>
+    <section anchor="Implementation" numbered="true" toc="default">
+      <name>Implementation Status</name>
+      <t>Note to RFC Editor: Please remove this section and the reference to
+         <xref target="RFC7942" format="default">RFC 7942</xref> before publication.</t>
+      <t>This section records the status of known implementations of the
+      protocol defined by this specification at the time of posting of
+      this Internet-Draft, and is based on a proposal described in <xref target="RFC7942" format="default">RFC
+      7942</xref>.  The description of implementations in this section is
+      intended to assist the IETF in its decision processes in
+      progressing drafts to RFCs.  Please note that the listing of any
+      individual implementation here does not imply endorsement by the
+      IETF.  Furthermore, no effort has been spent to verify the
+      information presented here that was supplied by IETF contributors.
+      This is not intended as, and must not be construed to be, a
+      catalog of available implementations or their features.  Readers
+      are advised to note that other implementations may exist.</t>
+
+      <t>According to <xref target="RFC7942" format="default">RFC 7942</xref>, "this will allow reviewers and working
+      groups to assign due consideration to documents that have the
+      benefit of running code, which may serve as evidence of valuable
+      experimentation and feedback that have made the implemented
+      protocols more mature.  It is up to the individual working groups
+      to use this information as they see fit".</t>
+
+      <section numbered="true" toc="default">
+        <name>Verisign EPP SDK</name>
+        <t>Organization: Verisign Inc.</t>
+        <t>Name: Verisign EPP SDK</t>
+        <t>Description: The Verisign EPP SDK includes both a full client implementation
+        and a full server stub implementation of draft-ietf-regext-epp-eai.</t>
+        <t>Level of maturity: Development</t>
+        <t>Coverage: All aspects of the protocol are implemented.</t>
+        <t>Licensing: GNU Lesser General Public License</t>
+        <t>Contact: jgould@verisign.com</t>
+        <t>URL: https://www.verisign.com/en_US/channel-resources/domain-registry-products/epp-sdks</t>
+      </section>
+
+    </section>
     <section numbered="true" toc="default">
-      <name>Implementation Considerations</name>
+      <name>Security Considerations</name>
       <t>
-	Registries MAY apply extra limitation to the email address syntax (e.g. the addresses can be limited to Left-to-Right scripts). These limitations are out of scope of this document.
+	Registries <bcp14>SHOULD</bcp14> validate the domain names syntax in the provided email addresses to reduce the risk of future usability errors.
+	It is RECOMMENDED to validate all code points in the domain names according to IDNA2008 <xref target="RFC5892" format="default"/>.
       </t>
+    </section>
+    <section numbered="true" toc="default">
+	    <name>Acknowledgments</name>
+	    <t>The authors would like to thank
+	    Alexander Mayrhofer,
+	    Gustavo Lozano,
+	    Jody Kolker,
+	    John Levine,
+	    Klaus Malorny,
+	    Marco Schrieck,
+	    Mario Loffredo,
+	    Patrick Mevzek,
+	    Scott Hollenbeck,
+	    Taras Heichenko,
+	    and Thomas Corte
+	    for their careful review and valuable comments.</t>
     </section>
   </middle>
   <back>
@@ -362,20 +411,7 @@ address or registrar-provided proxy email address.
 <seriesInfo name="DOI" value="10.17487/RFC6531"/>
 </reference>
 &RFC6532;
-        <reference anchor="RFC7451" target="https://www.rfc-editor.org/info/rfc7451" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7451.xml">
-          <front>
-            <title>Extension Registry for the Extensible Provisioning Protocol</title>
-            <seriesInfo name="DOI" value="10.27487/RFC7451"/>
-            <seriesInfo name="RFC" value="7451"/>
-            <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
-              <organization/>
-            </author>
-            <date year="2015" month="February"/>
-            <abstract>
-              <t>The Extensible Provisioning Protocol (EPP) includes features to add functionality by extending the protocol.  It does not, however, describe how those extensions are managed.  This document describes a procedure for the registration and management of extensions to EPP, and it specifies a format for an IANA registry to record those extensions.</t>
-            </abstract>
-          </front>
-        </reference>
+&RFC7942;
         <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
           <front>
             <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
@@ -406,6 +442,20 @@ address or registrar-provided proxy email address.
             <abstract>
               <t>This document specifies rules for deciding whether a code point, considered in isolation or in context, is a candidate for inclusion in an Internationalized Domain Name (IDN).  </t>
               <t>It is part of the specification of Internationalizing Domain Names in Applications 2008 (IDNA2008).  [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+        </reference>
+        <reference anchor="RFC7451" target="https://www.rfc-editor.org/info/rfc7451" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7451.xml">
+          <front>
+            <title>Extension Registry for the Extensible Provisioning Protocol</title>
+            <seriesInfo name="DOI" value="10.27487/RFC7451"/>
+            <seriesInfo name="RFC" value="7451"/>
+            <author initials="S." surname="Hollenbeck" fullname="S. Hollenbeck">
+              <organization/>
+            </author>
+            <date year="2015" month="February"/>
+            <abstract>
+              <t>The Extensible Provisioning Protocol (EPP) includes features to add functionality by extending the protocol.  It does not, however, describe how those extensions are managed.  This document describes a procedure for the registration and management of extensions to EPP, and it specifies a format for an IANA registry to record those extensions.</t>
             </abstract>
           </front>
         </reference>
@@ -487,6 +537,41 @@ address or registrar-provided proxy email address.
 	<ol spacing="normal" type="1">
           <li>Changed to use a pointed XML namespace with "0.3" instead of "0.2".</li>
 	  <li>Some wording improvements</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-03-to-ietf-04" numbered="true" toc="default">
+        <name>Change from the regext 03 to regext 04 version</name>
+	<ol spacing="normal" type="1">
+	  <li>Some nitpicking</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-04-to-ietf-05" numbered="true" toc="default">
+        <name>Change from the regext 04 to regext 05 version</name>
+	<ol spacing="normal" type="1">
+		<li>Some nitpicking</li>
+		<li>The "Implementation considerations" section is removed</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-05-to-ietf-06" numbered="true" toc="default">
+        <name>Change from the regext 05 to regext 06 version</name>
+	<ol spacing="normal" type="1">
+		<li>Some nitpicking</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-06-to-ietf-07" numbered="true" toc="default">
+        <name>Change from the regext 06 to regext 07 version</name>
+	<ol spacing="normal" type="1">
+		<li>Namespace version set to 1.0</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-07-to-ietf-08" numbered="true" toc="default">
+        <name>Change from the regext 07 to regext 08 version</name>
+	<ol spacing="normal" type="1">
+		<li>Information about implementations is provided.</li>
+		<li>Acknowledgments section is added.</li>
+		<li>Reference to RFC 7451 is moved to Informative.</li>
+		<li>IPR information is provided</li>
+		<li>Sections are reordered to align with the other regext documents</li>
         </ol>
       </section>
     </section>
