@@ -6,17 +6,19 @@
 <!ENTITY RFC5321 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5321.xml">
 <!ENTITY RFC5322 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5322.xml">
 <!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
+<!ENTITY RFC6530 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6530.xml">
+<!ENTITY RFC6531 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6531.xml">
 <!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
 <!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-08"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-09"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-08"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-09"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -43,7 +45,7 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-    <date month="April" year="2022" day="03"/>
+    <date month="May" year="2022" day="22"/>
     <abstract>
       <t>
    This document describes an EPP extension that permits usage of Internationalized Email Addresses in the EPP protocol
@@ -99,7 +101,7 @@
       <name>Email Address Specification</name>
       <t>
       Support of non-ASCII email address syntax is defined in <xref target="RFC6530" format="default">RFC 6530</xref>. This mapping does not prescribe minimum or maximum lengths for character strings used to represent email addresses.
-        The exact syntax of such addresses is described in Section 3.3 of <xref target="RFC6531" format="default"/>. The validation rules introduced in RFC 6531 are considered to be followed.
+        The exact syntax of such addresses is described in Section 3.3 of <xref target="RFC6531" format="default"/>. The validation rules introduced in RFC 6531 MUST be followed when processing this extension.
       </t>
       <t>
         The definition of email address in the EPP RFCs, including Section 2.6 of <xref target="RFC5733" format="default"/> and
@@ -155,7 +157,7 @@
       	    <name>EAI Functional Extension Negotiated</name>
 	    <t>
 		    If both client and server have indicated the support of the EAI addresses during the session establishment,
-		    it implies possibility to process the EAI address in any message having an email property during the established EPP session.
+		    it implies the possibility to process the EAI address in any message having an email property during the established EPP session.
               	Below are the server and client obligations when the EAI extension has been successfuly negotiated in the EPP session.
       	    </t>
       	    <t>The server MUST satisfy the following obligations when the EAI extension has been negotiated:</t>
@@ -286,9 +288,9 @@ address or registrar-provided proxy email address.
     </section>
     <section numbered="true" toc="default">
       <name>Security Considerations</name>
+      <t> The extended security considerations discussion in <xref target="RFC6530" format="default"/> and <xref target="RFC6531" format="default"/> applies here.</t>
       <t>
-	Registries <bcp14>SHOULD</bcp14> validate the domain names syntax in the provided email addresses to reduce the risk of future usability errors.
-	It is RECOMMENDED to validate all code points in the domain names according to IDNA2008 <xref target="RFC5892" format="default"/>.
+		      As email address is often a primary end user contact, invalid email address may put the communication with the end user into risk in case when such contact is necessary. In case of invalid domain name a malicious actor can register a valid domain with similar U-label (homograph attack) and get a control over the domain using social engineering techniques. To reduce the risk of the use of invalid domain names in email addresses, registries <bcp14>SHOULD</bcp14> validate the domain name syntax in the provided email addresses and validate all code points in the domain name according to IDNA2008 <xref target="RFC5892" format="default"/>.
       </t>
     </section>
     <section numbered="true" toc="default">
@@ -301,6 +303,7 @@ address or registrar-provided proxy email address.
 	    Klaus Malorny,
 	    Marco Schrieck,
 	    Mario Loffredo,
+	    Murray S. Kucherawy,
 	    Patrick Mevzek,
 	    Scott Hollenbeck,
 	    Taras Heichenko,
@@ -375,41 +378,9 @@ address or registrar-provided proxy email address.
             </abstract>
           </front>
         </reference>
-        &RFC5890;
-        <reference anchor="RFC6530" target="https://www.rfc-editor.org/info/rfc6530" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6530.xml">
-          <front>
-            <title>Overview and Framework for Internationalized Email</title>
-            <seriesInfo name="DOI" value="10.27487/RFC6530"/>
-            <seriesInfo name="RFC" value="6530"/>
-            <author initials="J." surname="Klensin" fullname="J. Klensin">
-              <organization/>
-            </author>
-            <author initials="Y." surname="Ko" fullname="Y. Ko">
-              <organization/>
-            </author>
-            <date year="2012" month="February"/>
-            <abstract>
-              <t>Full use of electronic mail throughout the world requires that (subject to other constraints) people be able to use close variations on their own names (written correctly in their own languages and scripts) as mailbox names in email addresses.  This document introduces a series of specifications that define mechanisms and protocol extensions needed to fully support internationalized email addresses.  These changes include an SMTP extension and extension of email header syntax to accommodate UTF-8 data.  The document set also includes discussion of key assumptions and issues in deploying fully internationalized email.  This document is a replacement for RFC 4952; it reflects additional issues identified since that document was published.  [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-  </reference>
-  <reference anchor="RFC6531" target="https://www.rfc-editor.org/info/rfc6531">
-<front>
-<title>SMTP Extension for Internationalized Email</title>
-<author initials="J." surname="Yao" fullname="J. Yao">
-<organization/>
-</author>
-<author initials="W." surname="Mao" fullname="W. Mao">
-<organization/>
-</author>
-<date year="2012" month="February"/>
-<abstract>
-<t>This document specifies an SMTP extension for transport and delivery of email messages with internationalized email addresses or header information. [STANDARDS-TRACK]</t>
-</abstract>
-</front>
-<seriesInfo name="RFC" value="6531"/>
-<seriesInfo name="DOI" value="10.17487/RFC6531"/>
-</reference>
+&RFC5890;
+&RFC6530;
+&RFC6531;
 &RFC6532;
 &RFC7942;
         <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
@@ -572,6 +543,12 @@ address or registrar-provided proxy email address.
 		<li>Reference to RFC 7451 is moved to Informative.</li>
 		<li>IPR information is provided</li>
 		<li>Sections are reordered to align with the other regext documents</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-08-to-ietf-09" numbered="true" toc="default">
+        <name>Change from the regext 08 to regext 09 version</name>
+	<ol spacing="normal" type="1">
+		<li>Nitpicking according to Murray S. Kucherawy review</li>
         </ol>
       </section>
     </section>
