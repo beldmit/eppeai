@@ -11,14 +11,14 @@
 <!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
 <!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-09"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-11"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-09"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-11"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -45,12 +45,12 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-    <date month="May" year="2022" day="22"/>
+    <date month="June" year="2022" day="05"/>
     <abstract>
       <t>
    This document describes an EPP extension that permits usage of Internationalized Email Addresses in the EPP protocol
    and specifies the terms when it can be used by EPP clients and servers.
-	 The Extensible Provisioning Protocol (EPP), being developed before appearing the standards
+	 The Extensible Provisioning Protocol (EPP), being developed before the standards
 	 for Internationalized Email Addresses (EAI), does not support such email addresses.
       </t>
       <t>TO BE REMOVED on turning to RFC: The document is edited in <eref target="https://github.com/beldmit/eppeai"> the dedicated github repo</eref>. Please send your submissions via GitHub.
@@ -115,7 +115,7 @@
       <t>
         The email address format is formally defined in Section 3.4.1 of <xref target="RFC5322" format="default"/>, which only consists of printable US-ASCII characters for both the local-part and the domain ABNF rules.
         <xref target="RFC6531" format="default"/> extends the Mailbox, Local-part and Domain ABNF rules in <xref target="RFC5321" format="default"/> to support "UTF8-non-ascii", defined in Section 3.1 of <xref target="RFC6532" format="default"/>, for the local-part and
-        U-label, defined in Section 2.3.2.1 of <xref target="RFC5890" format="default"/>, for the domain.  By applying the syntax rules of <xref target="RFC5322" format="default"/>, the EPP extensions will
+        U-label, defined in Section 2.3.2.1 of <xref target="RFC5890" format="default"/>, for the domain.  By applying the syntax rules of <xref target="RFC6531" format="default"/>, the EPP extensions will
         change from supporting only ASCII characters to supporting Internationalized characters both in the email address local-part and domain-part.
       </t>
     </section>
@@ -189,8 +189,8 @@
           </t>
           <t>The EAI supporting server MUST satisfy the following obligations when the client does not support the EAI extension:</t>
             <ul>
-              <li>When the email property is required in the EPP command, the server SHOULD validate the email property sent by the client using the ASCII email validation rules.</li>
-              <li>When the email property is optional in the EPP command, if the client supplies the email property the server SHOULD validate the email property using the ASCII email validation rules.</li>
+              <li>When the email property is required in the EPP command, the server MUST validate the email property sent by the client using the ASCII email validation rules.</li>
+              <li>When the email property is optional in the EPP command, if the client supplies the email property the server MUST validate the email property using the ASCII email validation rules.</li>
               <li>When the email property is required in the EPP response, the server MUST validate whether the email property is an EAI address and if so return the error code 2308 "Data management policy violation".</li>
               <li>When the email property is optional in the EPP response and is provided, the server MUST validate whether the email property is an EAI address and if so return the error code 2308 "Data management policy violation".</li>
             </ul>
@@ -290,7 +290,7 @@ address or registrar-provided proxy email address.
       <name>Security Considerations</name>
       <t> The extended security considerations discussion in <xref target="RFC6530" format="default"/> and <xref target="RFC6531" format="default"/> applies here.</t>
       <t>
-		      As email address is often a primary end user contact, invalid email address may put the communication with the end user into risk in case when such contact is necessary. In case of invalid domain name a malicious actor can register a valid domain with similar U-label (homograph attack) and get a control over the domain using social engineering techniques. To reduce the risk of the use of invalid domain names in email addresses, registries <bcp14>SHOULD</bcp14> validate the domain name syntax in the provided email addresses and validate all code points in the domain name according to IDNA2008 <xref target="RFC5892" format="default"/>.
+	As email address is often a primary end user contact, an invalid email address may put the communication with the end user into risk in case when such contact is necessary. In case of an invalid domain name in the email address a malicious actor can register a valid domain name with similar U-label (homograph attack) and get a control over the domain name associated with the contact using social engineering techniques. To reduce the risk of the use of invalid domain names in email addresses, registries <bcp14>SHOULD</bcp14> validate the domain name syntax in the provided email addresses and validate all code points in the domain name according to IDNA2008 <xref target="RFC5892" format="default"/>.
       </t>
     </section>
     <section numbered="true" toc="default">
@@ -299,12 +299,14 @@ address or registrar-provided proxy email address.
 	    Alexander Mayrhofer,
 	    Gustavo Lozano,
 	    Jody Kolker,
+	    John C Klensin,
 	    John Levine,
 	    Klaus Malorny,
 	    Marco Schrieck,
 	    Mario Loffredo,
 	    Murray S. Kucherawy,
 	    Patrick Mevzek,
+	    Pete Resnick,
 	    Scott Hollenbeck,
 	    Taras Heichenko,
 	    and Thomas Corte
@@ -549,6 +551,18 @@ address or registrar-provided proxy email address.
         <name>Change from the regext 08 to regext 09 version</name>
 	<ol spacing="normal" type="1">
 		<li>Nitpicking according to Murray S. Kucherawy review</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-09-to-ietf-10" numbered="true" toc="default">
+        <name>Change from the regext 09 to regext 10 version</name>
+	<ol spacing="normal" type="1">
+		<li>Some nitpicking in the security considerations.</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-10-to-ietf-11" numbered="true" toc="default">
+        <name>Change from the regext 10 to regext 11 version</name>
+	<ol spacing="normal" type="1">
+		<li>Nitpicking according mostly GenArt review.</li>
         </ol>
       </section>
     </section>
