@@ -11,14 +11,14 @@
 <!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
 <!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-12"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-13"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-12"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-13"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -45,7 +45,7 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-    <date month="June" year="2022" day="08"/>
+    <date month="June" year="2022" day="15"/>
     <abstract>
       <t>
    This document describes an EPP extension that permits usage of Internationalized Email Addresses in the EPP protocol
@@ -157,7 +157,7 @@
       	    <name>EAI Functional Extension Negotiated</name>
 	    <t>
 		    If both client and server have indicated the support of the EAI addresses during the session establishment,
-		    it implies the possibility to process the EAI address in any message having an email property during the established EPP session.
+		    they MUST be able to process the EAI address in any message having an email property during the established EPP session.
               	Below are the server and client obligations when the EAI extension has been successfuly negotiated in the EPP session.
       	    </t>
       	    <t>The server MUST satisfy the following obligations when the EAI extension has been negotiated:</t>
@@ -197,10 +197,8 @@
 
             <t>The EAI supporting client MUST satisfy the following obligations when the server does not support the EAI extension:</t>
               <ul>
-                <li>When the email property is required in the EPP command and the email property is an EAI address, the client MUST provide an ASCII email address.  The provided email address should provide a way to contact the registrant. It can be a secondary ASCII email address or registrar-provided proxy email address.</li>
-		<li>When the email property is optional in the EPP command and the email property is an EAI address with no alternative ASCII address, the client SHOULD omit the email property. If
-the email property is provided, the client MUST provide an ASCII email address. The provided email address should provide a way to contact the registrant. It can be a secondary ASCII email
-address or registrar-provided proxy email address.
+                <li>When the email property is required in the EPP command and the email property is an EAI address, the client MUST provide an ASCII email address.  The provided email address should provide a way to contact the registrant. It can be an extra ASCII email address collected by registrar or registrar-provided proxy email address.</li>
+		<li>When the email property is optional in the EPP command and the email property is an EAI address and client does not have an ASCII address providing a way to contact the registrant, the client MUST omit the email property. If the email property is provided, the client MUST provide an ASCII email address. The provided address can be an extra ASCII email address collected by registrar or registrar-provided proxy email address.
 	</li>
               </ul>
         </section>
@@ -284,24 +282,29 @@ address or registrar-provided proxy email address.
       <name>Security Considerations</name>
       <t> The extended security considerations discussion in <xref target="RFC6530" format="default"/> and <xref target="RFC6531" format="default"/> applies here.</t>
       <t>
-	As email address is often a primary end user contact, an invalid email address may put the communication with the end user into risk in case when such contact is necessary. In case of an invalid domain name in the email address a malicious actor can register a valid domain name with similar U-label (homograph attack) and get a control over the domain name associated with the contact using social engineering techniques. To reduce the risk of the use of invalid domain names in email addresses, registries <bcp14>SHOULD</bcp14> validate the domain name syntax in the provided email addresses and validate all code points in the domain name according to IDNA2008 <xref target="RFC5892" format="default"/>.
-      </t>
+	As email address is often a primary end user contact, an invalid email address may put the communication with the end user into risk in case when such contact is necessary. In case of an invalid domain name in the email address a malicious actor can register a valid domain name with similar U-label (homograph attack) and get a control over the domain name associated with the contact using social engineering techniques. To reduce the risk of the use of invalid domain names in email addresses, registries <bcp14>SHOULD</bcp14> validate the domain name syntax in the provided email addresses and validate whether the domain name consists of the code
+		points allow:ed by <eref target="https://www.iana.org/assignments/idna-tables">IDNA Rules and Derived Property Values</eref>.
+	</t>
+	<t>When the EAI functional extension is negotiated by both the client and the server, the client and server obligations defined in Section 5.3.1 MUST be satisfied.  If the obligations are not satisfied by either the client or server, the EAI address may be mishandled in processing or storage and be unusable.</t>
     </section>
     <section numbered="true" toc="default">
 	    <name>Acknowledgments</name>
 	    <t>The authors would like to thank
 	    Alexander Mayrhofer,
+	    Chris Lonvick,
 	    Gustavo Lozano,
 	    Jody Kolker,
 	    John C Klensin,
 	    John Levine,
 	    Klaus Malorny,
+	    Marc Blanchet,
 	    Marco Schrieck,
 	    Mario Loffredo,
 	    Murray S. Kucherawy,
 	    Patrick Mevzek,
 	    Pete Resnick,
 	    Scott Hollenbeck,
+	    Takahiro Nemoto,
 	    Taras Heichenko,
 	    and Thomas Corte
 	    for their careful review and valuable comments.</t>
@@ -397,21 +400,6 @@ address or registrar-provided proxy email address.
       </references>
       <references>
         <name>Informative References</name>
-        <reference anchor="RFC5892" target="https://www.rfc-editor.org/info/rfc5892" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5892.xml">
-          <front>
-            <title>The Unicode Code Points and Internationalized Domain Names for Applications (IDNA)</title>
-            <seriesInfo name="DOI" value="10.27487/RFC5892"/>
-            <seriesInfo name="RFC" value="5892"/>
-            <author initials="P." surname="Faltstrom" fullname="P. Faltstrom" role="editor">
-              <organization/>
-            </author>
-            <date year="2010" month="August"/>
-            <abstract>
-              <t>This document specifies rules for deciding whether a code point, considered in isolation or in context, is a candidate for inclusion in an Internationalized Domain Name (IDN).  </t>
-              <t>It is part of the specification of Internationalizing Domain Names in Applications 2008 (IDNA2008).  [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-        </reference>
         <reference anchor="RFC7451" target="https://www.rfc-editor.org/info/rfc7451" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7451.xml">
           <front>
             <title>Extension Registry for the Extensible Provisioning Protocol</title>
@@ -563,6 +551,12 @@ address or registrar-provided proxy email address.
         <name>Change from the regext 11 to regext 12 version</name>
 	<ol spacing="normal" type="1">
 		<li>XML schema registration request removed.</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-12-to-ietf-13" numbered="true" toc="default">
+        <name>Change from the regext 12 to regext 13 version</name>
+	<ol spacing="normal" type="1">
+		<li>Document updated according to SecDir and ART-ART review.</li>
         </ol>
       </section>
     </section>
