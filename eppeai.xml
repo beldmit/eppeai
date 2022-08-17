@@ -11,14 +11,14 @@
 <!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
 <!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-14"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-15"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-14"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-15"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -45,7 +45,7 @@
         <uri>http://www.verisigninc.com</uri>
       </address>
     </author>
-    <date month="June" year="2022" day="27"/>
+    <date month="August" year="2022" day="17"/>
     <abstract>
       <t>
    This document describes an EPP extension that permits usage of Internationalized Email Addresses in the EPP protocol
@@ -197,8 +197,8 @@
 
             <t>The EAI supporting client MUST satisfy the following obligations when the server does not support the EAI extension:</t>
               <ul>
-                <li>When the email property is required in the EPP command and the email property is an EAI address, the client MUST provide an ASCII email address.  The provided email address should provide a way to contact the registrant. It can be an extra ASCII email address collected by registrar or registrar-provided proxy email address.</li>
-		<li>When the email property is optional in the EPP command and the email property is an EAI address and client does not have an ASCII address providing a way to contact the registrant, the client MUST omit the email property. If the email property is provided, the client MUST provide an ASCII email address. The provided address can be an extra ASCII email address collected by registrar or registrar-provided proxy email address.
+                <li>When the email property is required in the EPP command and the email property is an EAI address, the client MUST provide an ASCII email address.  The provided email address should provide a way to contact the registrant.</li>
+		<li>When the email property is optional in the EPP command and the email property is an EAI address and client does not have an ASCII address providing a way to contact the registrant, the client MUST omit the email property. If the email property is provided, the client MUST provide an ASCII email address.
 	</li>
               </ul>
         </section>
@@ -283,7 +283,7 @@
       <t> The extended security considerations discussion in <xref target="RFC6530" format="default"/> and <xref target="RFC6531" format="default"/> applies here.</t>
       <t>
 	As email address is often a primary end user contact, an invalid email address may put the communication with the end user into risk in case when such contact is necessary. In case of an invalid domain name in the email address a malicious actor can register a valid domain name with similar U-label (homograph attack) and get a control over the domain name associated with the contact using social engineering techniques. To reduce the risk of the use of invalid domain names in email addresses, registries <bcp14>SHOULD</bcp14> validate the domain name syntax in the provided email addresses and validate whether the domain name consists of the code
-		points allow:ed by <eref target="https://www.iana.org/assignments/idna-tables">IDNA Rules and Derived Property Values</eref>.
+		points allowed by <eref target="https://www.iana.org/assignments/idna-tables">IDNA Rules and Derived Property Values</eref>.
 	</t>
 	<t>When the EAI functional extension is negotiated by both the client and the server, the client and server obligations defined in Section 5.3.1 MUST be satisfied.  If the obligations are not satisfied by either the client or server, the EAI address may be mishandled in processing or storage and be unusable.</t>
     </section>
@@ -563,6 +563,12 @@
         <name>Change from the regext 13 to regext 14 version</name>
 	<ol spacing="normal" type="1">
 		<li>Document updated according the IANA review #1231866.</li>
+        </ol>
+      </section>
+      <section anchor="change-ietf-14-to-ietf-15" numbered="true" toc="default">
+        <name>Change from the regext 14 to regext 15 version</name>
+	<ol spacing="normal" type="1">
+		<li>Document updated according to ART-ART review.</li>
         </ol>
       </section>
     </section>
