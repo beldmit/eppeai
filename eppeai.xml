@@ -17,7 +17,7 @@
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
-    <title abbrev="Use of EAI in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
+    <title abbrev="Use of SMTPUTF8 addresses in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
     <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-16"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
@@ -50,7 +50,7 @@
    This document describes an EPP command-response extension that permits usage of Internationalized Email Addresses in the EPP protocol
    and specifies the terms when it can be used by EPP clients and servers.
 	 The Extensible Provisioning Protocol (EPP), being developed before the standards
-	 for Internationalized Email Addresses (EAI), does not support such email addresses.
+	 for SMTPUTF8 compliant addresses, does not support such email addresses.
       </t>
       <t>TO BE REMOVED on turning to RFC: The document is edited in <eref target="https://github.com/beldmit/eppeai"> the dedicated github repo</eref>. Please send your submissions via GitHub.
       </t>
@@ -108,7 +108,7 @@
         Section 4.1.2, 4.2.1, and 4.2.5 of <xref target="RFC8543" format="default"/>, references <xref target="RFC5322" format="default"/> for the email address syntax.  The XML schema
         definition in Section 4 of <xref target="RFC5733" format="default"/> and Section 5 of <xref target="RFC8543" format="default"/> defines the "email" element using the type "eppcom:minTokenType",
         which is defined in Section 4.2 of <xref target="RFC5730" format="default"/> as an XML schema "token" type with minimal length of one.  The XML schema "token" type will fully support the use
-        of EAI addresses, so the primary application of the EAI extension is to apply the use of <xref target="RFC6531" format="default"/> instead of <xref target="RFC5322" format="default"/> for
+        of SMTPUTF8 compliant addresses so the primary application of the extension is to apply the use of <xref target="RFC6531" format="default"/> instead of <xref target="RFC5322" format="default"/> for
         the email address syntax.  Other EPP extensions may follow the formal syntax definition using the XML schema type "eppcom:minTokenType" and the <xref target="RFC5322" format="default"/> format specification,
         where this extension applies to all EPP extensions with the same or similar definitions.
       </t>
@@ -120,7 +120,7 @@
       </t>
     </section>
     <section numbered="true" toc="default">
-      <name>Internationalized Email Addresses (EAI) Extension</name>
+      <name>SMTPUTF8 Extension</name>
       <section numbered="true" toc="default">
   	    <name>Scope of Extension</name>
   	    <t>
@@ -128,7 +128,7 @@
            Examples include the &lt;contact:email&gt; element in the <xref target="RFC5733" format="default">EPP contact mapping</xref> or
            the &lt;org:email&gt; element in the <xref target="RFC8543" format="default">EPP organization mapping</xref>.  All registry zones (e.g., top-level domains) authorized
            for the client in the EPP session apply.  There is no concept of a per-client, per-zone, per-extension, or per-field setting that is used to indicate
-           support for EAI, but instead it's a global setting that applies to the EPP session.
+           support for SMTPUTF8 compliant addresses, but instead it's a global setting that applies to the EPP session.
   	    </t>
       </section>
       <section numbered="true" toc="default">
@@ -145,51 +145,51 @@
       <section numbered="true" toc="default">
   	    <name>Extension Behavior</name>
           <section numbered="true" toc="default">
-      	    <name>EAI Extension Negotiated</name>
+      	    <name>SMTPUTF8 compliant addresses Extension Negotiated</name>
 	    <t>
-		    If both client and server have indicated the support of the EAI addresses during the session establishment,
-		    they MUST be able to process the EAI address in any message having an email property during the established EPP session.
-              	Below are the server and client obligations when the EAI extension has been successfuly negotiated in the EPP session.
+		    If both client and server have indicated the support of the SMTPUTF8 addresses during the session establishment,
+		    they MUST be able to process the SMTPUTF8 address in any message having an email property during the established EPP session.
+              	Below are the server and client obligations when the SMTPUTF8 extension has been successfuly negotiated in the EPP session.
       	    </t>
-      	    <t>The server MUST satisfy the following obligations when the EAI extension has been negotiated:</t>
+      	    <t>The server MUST satisfy the following obligations when the SMTPUTF8 extension has been negotiated:</t>
       	    <ul>
-      	    <li>Accept EAI compatible addresses for all email properties in the EPP session negotiated object extensions and command-response extensions.
+      	    <li>Accept SMTPUTF8 compliant addresses for all email properties in the EPP session negotiated object extensions and command-response extensions.
                 For example the &lt;contact:email&gt; element in <xref target="RFC5733" format="default"/> and the &lt;org:email&gt; element in <xref target="RFC8543" format="default"/>.</li>
 
-	    <li>Accept EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
-	    <li>Email address validation based on EAI validation rules defined in <xref target="emailAddressSpec" format="default"/></li>
+	    <li>Accept SMTPUTF8 compliant addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
+	    <li>Email address validation based on SMTPUTF8 validation rules defined in <xref target="emailAddressSpec" format="default"/></li>
 	    <li>Storage of email properties that support internationalized characters.</li>
-	    <li>Return EAI compatible addresses for all email properties in the EPP responses.</li>
+	    <li>Return SMTPUTF8 compliant addresses for all email properties in the EPP responses.</li>
           </ul>
 
-          <t>The client MUST satisfy the following obligations when the EAI extension has been negotiated:</t>
+          <t>The client MUST satisfy the following obligations when the SMTPUTF8 extension has been negotiated:</t>
           <ul>
-      	    <li>Provide EAI compatible addresses for all e-mail properties in the EPP session negotiated object extensions and command-response extensions.  For example the &lt;contact:email&gt; element in <xref target="RFC5733" format="default"/> and the &lt;org:email&gt; element in <xref target="RFC8543" format="default"/>.</li>
+      	    <li>Provide SMTPUTF8 compliant addresses for all e-mail properties in the EPP session negotiated object extensions and command-response extensions.  For example the &lt;contact:email&gt; element in <xref target="RFC5733" format="default"/> and the &lt;org:email&gt; element in <xref target="RFC8543" format="default"/>.</li>
 
-      	    <li>Provide EAI compatible addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
+      	    <li>Provide SMTPUTF8 compliant addresses for all registry zones (e.g., top-level domains) authorized for the client in the EPP session.</li>
 
-      	    <li>Accept EAI compatible addresses in the EPP responses for all email properties in the EPP session negotiated object extensions and command-response extensions.</li>
+      	    <li>Accept SMTPUTF8 compliant addresses in the EPP responses for all email properties in the EPP session negotiated object extensions and command-response extensions.</li>
       	  </ul>
         </section>
 
         <section numbered="true" toc="default">
-          <name>EAI Extension Not Negotiated</name>
+          <name>SMTPUTF8 Extension Not Negotiated</name>
           <t>
-            The lack of EAI support can cause data and functional issues, so an EAI supporting client or server needs to handle cases where the opposite party doesn't support EAI.
-            Below are the server and client obligations when the EAI extension is not negotiated due to the lack of support by the peer.
+            The lack of SMTPUTF8 adresses support can cause data and functional issues, so an SMTPUTF8 supporting client or server needs to handle cases where the opposite party doesn't support SMTPUTF8 addresses processing.
+            Below are the server and client obligations when the SMTPUTF8 extension is not negotiated due to the lack of support by the peer.
           </t>
-          <t>The EAI supporting server MUST satisfy the following obligations when the client does not support the EAI extension:</t>
+          <t>The SMTPUTF8 supporting server MUST satisfy the following obligations when the client does not support the SMTPUTF8 extension:</t>
             <ul>
               <li>When the email property is required in the EPP command, the server MUST validate the email property sent by the client using the ASCII email validation rules.</li>
               <li>When the email property is optional in the EPP command, if the client supplies the email property the server MUST validate the email property using the ASCII email validation rules.</li>
-              <li>When the email property is required in the EPP response, the server MUST validate whether the email property is an EAI address and if so return the error code 2308 "Data management policy violation".</li>
-              <li>When the email property is optional in the EPP response and is provided, the server MUST validate whether the email property is an EAI address and if so return the error code 2308 "Data management policy violation".</li>
+              <li>When the email property is required in the EPP response, the server MUST validate whether the email property is an SMTPUTF8 address and if so return the error code 2308 "Data management policy violation".</li>
+              <li>When the email property is optional in the EPP response and is provided, the server MUST validate whether the email property is an SMTPUTF8 address and if so return the error code 2308 "Data management policy violation".</li>
             </ul>
 
-            <t>The EAI supporting client MUST satisfy the following obligations when the server does not support the EAI extension:</t>
+            <t>The SMTPUTF8 supporting client MUST satisfy the following obligations when the server does not support the SMTPUTF8 extension:</t>
               <ul>
-                <li>When the email property is required in the EPP command and the email property is an EAI address, the client MUST provide an ASCII email address.  The provided email address should provide a way to contact the registrant.</li>
-		<li>When the email property is optional in the EPP command and the email property is an EAI address and client does not have an ASCII address providing a way to contact the registrant, the client MUST omit the email property. If the email property is provided, the client MUST provide an ASCII email address.
+                <li>When the email property is required in the EPP command and the email property is an SMTPUTF8 address, the client MUST provide an ASCII email address.  The provided email address should provide a way to contact the registrant.</li>
+		<li>When the email property is optional in the EPP command and the email property is an SMTPUTF8 address and client does not have an ASCII address providing a way to contact the registrant, the client MUST omit the email property. If the email property is provided, the client MUST provide an ASCII email address.
 	</li>
               </ul>
         </section>
@@ -276,7 +276,7 @@
 	As email address is often a primary end user contact, an invalid email address may put the communication with the end user into risk in case when such contact is necessary. In case of an invalid domain name in the email address a malicious actor can register a valid domain name with similar U-label (homograph attack) and get a control over the domain name associated with the contact using social engineering techniques. To reduce the risk of the use of invalid domain names in email addresses, registries <bcp14>SHOULD</bcp14> validate the domain name syntax in the provided email addresses and validate whether the domain name consists of the code
 		points allowed by <eref target="https://www.iana.org/assignments/idna-tables">IDNA Rules and Derived Property Values</eref>.
 	</t>
-	<t>When the EAI extension is negotiated by both the client and the server, the client and server obligations defined in Section 5.3.1 MUST be satisfied.  If the obligations are not satisfied by either the client or server, the EAI address may be mishandled in processing or storage and be unusable.</t>
+	<t>When the SMTPUTF8 extension is negotiated by both the client and the server, the client and server obligations defined in Section 5.3.1 MUST be satisfied.  If the obligations are not satisfied by either the client or server, the SMTPUTF8 address may be mishandled in processing or storage and be unusable.</t>
     </section>
     <section numbered="true" toc="default">
 	    <name>Acknowledgments</name>
@@ -566,6 +566,7 @@
       <name>Change from the regext 15 to regext 16 version</name>
 <ol spacing="normal" type="1">
   <li>Document removed the definition of the concept of a functional extension and updated to use a command-response extension, based on the feedback from John C Klensin.</li>
+  <li>Document removed the EAI abbreviation and uses SMTPUTF8 as umbrella term instead, based on the feedback from John C Klensin.</li>
       </ol>
     </section>
   </section>
