@@ -10,15 +10,16 @@
 <!ENTITY RFC6531 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6531.xml">
 <!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
 <!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
+<!ENTITY RFC8590 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8590.xml">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-16"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-17"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of SMTPUTF8 addresses in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-16"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-17"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -64,9 +65,9 @@
 	To make such addresses more widely accepted, the changes to various protocols need to be introduced.
       </t>
       <t>
-   This document describes an Extensible Provisioning Protocol (EPP) command-response extension, defined in <xref target="RFC5730" format="default"/> ,
-   that permits usage of Internationalized Email Addresses in the EPP protocol
-   and specifies the terms when it can be used by EPP clients and servers.  The extension is used
+   This document describes an Extensible Provisioning Protocol (EPP) command-response extension, defined in <xref target="RFC5730" format="default"/>,
+   that permits the usage of Internationalized Email Addresses in the EPP protocol, specifies the terms when it can be used by EPP clients and servers,
+   and defines an alternate email to use during a transition period from ASCII-only to both ASCII and SMTPUTF8.  The extension is used
    to apply the rules for the processing of email address elements in all of the <xref target="RFC5730" format="default"/> extensions negotiated in the EPP session,
    which include the object and command-responses extensions. The extension can be applied to any object or command-response extension that uses an email address.
       </t>
@@ -85,6 +86,22 @@
   "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
   as described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/> when, and only when,
   they appear in all capitals, as shown here.</t>
+
+  <t>XML is case sensitive. Unless stated otherwise, XML specifications
+  and examples provided in this document MUST be interpreted in the
+  character case presented in order to develop a conforming
+  implementation.</t>
+
+  <t>In examples, "C:" represents lines sent by a protocol client and "S:" represents lines returned by a protocol server.
+  Indentation and white space in the examples are provided only to
+  illustrate element relationships and are not REQUIRED in the protocol.</t>
+
+  <t>The XML namespace prefix "eai" is used for the namespace
+"urn:ietf:params:xml:ns:epp:eai-1.0", but implementations MUST NOT depend on
+  it and instead employ
+  a proper namespace-aware XML parser and serializer to interpret and
+  output the XML documents.</t>
+
       </section>
     </section>
     <section numbered="true" toc="default">
@@ -118,6 +135,16 @@
         U-label, defined in Section 2.3.2.1 of <xref target="RFC5890" format="default"/>, for the domain.  By applying the syntax rules of <xref target="RFC6531" format="default"/>, the EPP extensions will
         change from supporting only ASCII characters to supporting Internationalized characters both in the email address local-part and domain-part.
       </t>
+    </section>
+    <section anchor="eaiElement" numbered="true" toc="default">
+      <name>SMTPUTF8 &lt;eai:eai&gt; Element</name>
+      <t>During a transition period, as defined in the <xref target="eaiTransitionConsiderations">SMTPUTF8 Transition Considerations</xref>, an alternate email can be set using the &lt;eai:eai&gt; element
+      with the command and response extensions defined in <xref target="commands"/>.  The &lt;eai:eai&gt; element contains the following child element:</t>
+      <dl newline="false" indent="4">
+          <dt>&lt;eai:email&gt;:</dt>
+          <dd>An element following the syntax in <xref target="emailAddressSpec"/> for defining an alternate ASCII or SMTPUTF8 address.  An empty &lt;eai:email/&gt; element unsets
+          the alternate email in the <xref target="updateCommand">Update Command</xref> and indicates the alternate email is not set in the <xref target="infoCommand">Info Response</xref>.</dd>
+      </dl>
     </section>
     <section numbered="true" toc="default">
       <name>SMTPUTF8 Extension</name>
@@ -196,6 +223,530 @@
       </section>
     </section>
 
+    <section anchor="commands" title="EPP Command Mapping">
+      <t>A detailed description of the EPP syntax and semantics can be found
+      in the EPP core protocol specification <xref target="RFC5730"/>.
+      This section defines the provisioning of an alternate email address to support the SMTPUTF8 transition.
+      See <xref target="eaiTransitionConsiderations"/> for more information on the SMTPUTF8 transition.</t>
+
+      <section anchor="queryCommands" title="EPP Query Commands">
+
+        <t>EPP provides three commands to retrieve object information: &lt;check&gt; to determine
+        if an object can be provisioned, &lt;info&gt; to retrieve  information associated
+        with an object, and &lt;transfer&gt; to retrieve object-transfer status information.</t>
+
+      <section anchor="checkCommand" title="EPP &lt;check&gt; Command">
+
+        <t>This extension does not add any elements to the EPP &lt;check&gt; command
+        or &lt;check&gt; response described in <xref target="RFC5730"/>.</t>
+
+      </section>
+
+      <!-- end CHECK command -->
+
+      <section anchor="infoCommand" title="EPP &lt;info&gt; Command">
+
+        <t>This extension does not add any elements to the EPP &lt;info&gt; command
+        response described in <xref target="RFC5730"/>.</t>
+
+          <t>
+          If the query was successful, the server replies with an <xref target="eaiElement">&lt;eai:eai&gt; element</xref>
+          along with the regular EPP &lt;resData&gt;.
+          </t>
+
+          <t>The following is an example &lt;info&gt; contact response using the
+          &lt;eai:eai&gt; extension with no alternate email:</t>
+          <figure>
+            <name>Example &lt;info&gt; contact response using the
+            &lt;eai:eai&gt; extension with no alternate email</name>
+<sourcecode type="xml" markers="false"><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <contact:infData
+S:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+S:        <contact:id>sh8013</contact:id>
+S:        <contact:roid>SH8013-REP</contact:roid>
+S:        <contact:status s="linked"/>
+S:        <contact:status s="clientDeleteProhibited"/>
+S:        <contact:postalInfo type="int">
+S:          <contact:name>John Doe</contact:name>
+S:          <contact:org>Example Inc.</contact:org>
+S:          <contact:addr>
+S:            <contact:street>123 Example Dr.</contact:street>
+S:            <contact:street>Suite 100</contact:street>
+S:            <contact:city>Dulles</contact:city>
+S:            <contact:sp>VA</contact:sp>
+S:            <contact:pc>20166-6503</contact:pc>
+S:            <contact:cc>US</contact:cc>
+S:          </contact:addr>
+S:        </contact:postalInfo>
+S:        <contact:voice x="1234">+1.7035555555</contact:voice>
+S:        <contact:fax>+1.7035555556</contact:fax>
+S:        <contact:email>麥克風@example.com</contact:email>
+S:        <contact:clID>ClientY</contact:clID>
+S:        <contact:crID>ClientX</contact:crID>
+S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
+S:        <contact:upID>ClientX</contact:upID>
+S:        <contact:upDate>1999-12-03T09:00:00.0Z</contact:upDate>
+S:        <contact:trDate>2000-04-08T09:00:00.0Z</contact:trDate>
+S:        <contact:authInfo>
+S:          <contact:pw>2fooBAR</contact:pw>
+S:        </contact:authInfo>
+S:        <contact:disclose flag="0">
+S:          <contact:voice/>
+S:          <contact:email/>
+S:        </contact:disclose>
+S:      </contact:infData>
+S:    </resData>
+S:    <extension>
+S:      <eai:eai
+S:       xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0">
+S:        <eai:email/>
+S:      </eai:eai>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54322-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></sourcecode>
+          </figure>
+
+          <t>The following is an example &lt;info&gt; contact response using the
+          &lt;eai:eai&gt; extension with an ASCII alternate email:</t>
+          <figure>
+            <name>Example &lt;info&gt; contact response using the
+            &lt;eai:eai&gt; extension with an ASCII alternate email</name>
+<sourcecode type="xml" markers="false"><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <contact:infData
+S:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+S:        <contact:id>sh8013</contact:id>
+S:        <contact:roid>SH8013-REP</contact:roid>
+S:        <contact:status s="linked"/>
+S:        <contact:status s="clientDeleteProhibited"/>
+S:        <contact:postalInfo type="int">
+S:          <contact:name>John Doe</contact:name>
+S:          <contact:org>Example Inc.</contact:org>
+S:          <contact:addr>
+S:            <contact:street>123 Example Dr.</contact:street>
+S:            <contact:street>Suite 100</contact:street>
+S:            <contact:city>Dulles</contact:city>
+S:            <contact:sp>VA</contact:sp>
+S:            <contact:pc>20166-6503</contact:pc>
+S:            <contact:cc>US</contact:cc>
+S:          </contact:addr>
+S:        </contact:postalInfo>
+S:        <contact:voice x="1234">+1.7035555555</contact:voice>
+S:        <contact:fax>+1.7035555556</contact:fax>
+S:        <contact:email>麥克風@example.com</contact:email>
+S:        <contact:clID>ClientY</contact:clID>
+S:        <contact:crID>ClientX</contact:crID>
+S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
+S:        <contact:upID>ClientX</contact:upID>
+S:        <contact:upDate>1999-12-03T09:00:00.0Z</contact:upDate>
+S:        <contact:trDate>2000-04-08T09:00:00.0Z</contact:trDate>
+S:        <contact:authInfo>
+S:          <contact:pw>2fooBAR</contact:pw>
+S:        </contact:authInfo>
+S:        <contact:disclose flag="0">
+S:          <contact:voice/>
+S:          <contact:email/>
+S:        </contact:disclose>
+S:      </contact:infData>
+S:    </resData>
+S:    <extension>
+S:      <eai:eai
+S:       xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0">
+S:        <eai:email>jdoe@example.com</eai:email>
+S:      </eai:eai>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54322-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></sourcecode>
+          </figure>
+
+          <t>The following is an example &lt;info&gt; contact response using the
+          &lt;eai:eai&gt; extension with an SMTPUTF8 alternate email:</t>
+          <figure>
+            <name>Example &lt;info&gt; contact response using the
+            &lt;eai:eai&gt; extension with an SMTPUTF8 alternate email</name>
+<sourcecode type="xml" markers="false"><![CDATA[
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <contact:infData
+S:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+S:        <contact:id>sh8013</contact:id>
+S:        <contact:roid>SH8013-REP</contact:roid>
+S:        <contact:status s="linked"/>
+S:        <contact:status s="clientDeleteProhibited"/>
+S:        <contact:postalInfo type="int">
+S:          <contact:name>John Doe</contact:name>
+S:          <contact:org>Example Inc.</contact:org>
+S:          <contact:addr>
+S:            <contact:street>123 Example Dr.</contact:street>
+S:            <contact:street>Suite 100</contact:street>
+S:            <contact:city>Dulles</contact:city>
+S:            <contact:sp>VA</contact:sp>
+S:            <contact:pc>20166-6503</contact:pc>
+S:            <contact:cc>US</contact:cc>
+S:          </contact:addr>
+S:        </contact:postalInfo>
+S:        <contact:voice x="1234">+1.7035555555</contact:voice>
+S:        <contact:fax>+1.7035555556</contact:fax>
+S:        <contact:email>jdoe@example.com</contact:email>
+S:        <contact:clID>ClientY</contact:clID>
+S:        <contact:crID>ClientX</contact:crID>
+S:        <contact:crDate>1999-04-03T22:00:00.0Z</contact:crDate>
+S:        <contact:upID>ClientX</contact:upID>
+S:        <contact:upDate>1999-12-03T09:00:00.0Z</contact:upDate>
+S:        <contact:trDate>2000-04-08T09:00:00.0Z</contact:trDate>
+S:        <contact:authInfo>
+S:          <contact:pw>2fooBAR</contact:pw>
+S:        </contact:authInfo>
+S:        <contact:disclose flag="0">
+S:          <contact:voice/>
+S:          <contact:email/>
+S:        </contact:disclose>
+S:      </contact:infData>
+S:    </resData>
+S:    <extension>
+S:      <eai:eai
+S:       xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0">
+S:        <eai:email>麥克風@example.com</eai:email>
+S:      </eai:eai>
+S:    </extension>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>54322-XYZ</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>]]></sourcecode>
+          </figure>
+
+      </section>
+      <!-- end INFO command -->
+
+      <section anchor="transferQueryCommand" title="EPP &lt;transfer&gt; Query Command">
+
+       <t>This extension does not add any elements to the EPP &lt;transfer&gt; query command
+       or &lt;transfer&gt; query response described in <xref target="RFC5730"/>.</t>
+
+      </section>
+      <!-- end TRANSFER QUERY command -->
+
+      </section>
+
+      <section anchor="transformCommands" title="EPP Transform Commands">
+
+        <t>EPP provides five commands to transform objects: &lt;create&gt; to create an instance of an object,
+        &lt;delete&gt; to delete an instance of an object, &lt;renew&gt; to extend the validity period of an object,
+        &lt;transfer&gt; to manage object sponsorship changes, and &lt;update&gt; to change information associated
+        with an object.</t>
+
+      <section anchor="createCommand" title="EPP &lt;create&gt; Command">
+
+       <t>This extension defines additional elements to extend the EPP
+        &lt;create&gt; command of an object mapping like <xref target="RFC5733"/>.</t>
+
+       <t>The EPP &lt;create&gt; command provides a transform operation that allows a client to create an instance of an object.
+       In addition to the EPP command elements described in an object mapping like <xref target="RFC5733"/>, the command MUST contain a
+       child <xref target="eaiElement">&lt;eai:eai&gt; element</xref> for the client to be set an alternate email.
+       If the alternate email does not apply to the object, the server MUST return an EPP error result code of 2201.</t>
+
+       <t>The following is an example &lt;create&gt; command to create a contact object with an alternate ASCII email:</t>
+       <figure>
+            <name>Example &lt;create&gt; command to create a contact object with an alternate ASCII email</name>
+
+            <sourcecode type="xml" markers="false"><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <create>
+C:      <contact:create
+C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+C:        <contact:id>sh8013</contact:id>
+C:        <contact:postalInfo type="int">
+C:          <contact:name>John Doe</contact:name>
+C:          <contact:org>Example Inc.</contact:org>
+C:          <contact:addr>
+C:            <contact:street>123 Example Dr.</contact:street>
+C:            <contact:street>Suite 100</contact:street>
+C:            <contact:city>Dulles</contact:city>
+C:            <contact:sp>VA</contact:sp>
+C:            <contact:pc>20166-6503</contact:pc>
+C:            <contact:cc>US</contact:cc>
+C:          </contact:addr>
+C:        </contact:postalInfo>
+C:        <contact:voice x="1234">+1.7035555555</contact:voice>
+C:        <contact:fax>+1.7035555556</contact:fax>
+C:        <contact:email>麥克風@example.com</contact:email>
+C:        <contact:authInfo>
+C:          <contact:pw>2fooBAR</contact:pw>
+C:        </contact:authInfo>
+C:        <contact:disclose flag="0">
+C:          <contact:voice/>
+C:          <contact:email/>
+C:        </contact:disclose>
+C:      </contact:create>
+C:    </create>
+C:    <extension>
+C:      <eai:eai
+C:       xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0">
+C:        <eai:email>jdoe@example.com</eai:email>
+C:      </eai:eai>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></sourcecode>
+       </figure>
+
+       <t>The following is an example &lt;create&gt; command to create a contact object with an alternate SMTPUTF8 email:</t>
+       <figure>
+            <name>Example &lt;create&gt; command to create a contact object with an alternate SMTPUTF8 email</name>
+
+            <sourcecode type="xml" markers="false"><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <create>
+C:      <contact:create
+C:       xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+C:        <contact:id>sh8013</contact:id>
+C:        <contact:postalInfo type="int">
+C:          <contact:name>John Doe</contact:name>
+C:          <contact:org>Example Inc.</contact:org>
+C:          <contact:addr>
+C:            <contact:street>123 Example Dr.</contact:street>
+C:            <contact:street>Suite 100</contact:street>
+C:            <contact:city>Dulles</contact:city>
+C:            <contact:sp>VA</contact:sp>
+C:            <contact:pc>20166-6503</contact:pc>
+C:            <contact:cc>US</contact:cc>
+C:          </contact:addr>
+C:        </contact:postalInfo>
+C:        <contact:voice x="1234">+1.7035555555</contact:voice>
+C:        <contact:fax>+1.7035555556</contact:fax>
+C:        <contact:email>jdoe@example.com</contact:email>
+C:        <contact:authInfo>
+C:          <contact:pw>2fooBAR</contact:pw>
+C:        </contact:authInfo>
+C:        <contact:disclose flag="0">
+C:          <contact:voice/>
+C:          <contact:email/>
+C:        </contact:disclose>
+C:      </contact:create>
+C:    </create>
+C:    <extension>
+C:      <eai:eai
+C:       xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0">
+C:        <eai:email>麥克風@example.com</eai:email>
+C:      </eai:eai>
+C:    </extension>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>]]></sourcecode>
+       </figure>
+
+       <t>This extension does not add any elements to the EPP &lt;create&gt; response described
+       in <xref target="RFC5730"/>.</t>
+
+      </section>
+      <!-- end CREATE command -->
+
+      <section anchor="deleteCommand" title="EPP &lt;delete&gt; Command">
+
+       <t>This extension does not add any elements to the EPP &lt;delete&gt; command
+       or &lt;delete&gt; response described in <xref target="RFC5730"/>.</t>
+
+      </section>
+      <!-- end DELETE command -->
+
+      <section anchor="renewCommand" title="EPP &lt;renew&gt; Command">
+
+       <t>This extension does not add any elements to the EPP &lt;renew&gt; command
+       or &lt;renew&gt; response described in <xref target="RFC5730"/>.</t>
+
+      </section>
+      <!-- end RENEW command -->
+
+      <section anchor="transferCommand" title="EPP &lt;transfer&gt; Command">
+
+        <t>This extension does not add any elements to the EPP &lt;transfer&gt; command
+        or &lt;transfer&gt; response described in <xref target="RFC5730"/>.</t>
+
+      </section>
+      <!-- end TRANSFER command -->
+
+      <section anchor="updateCommand" title="EPP &lt;update&gt; Command">
+
+        <t>This extension defines additional elements to extend the EPP
+         &lt;update&gt; command of an object mapping like <xref target="RFC5733"/>.</t>
+
+        <t>The EPP &lt;update&gt; command provides a transform operation that allows a client to update an instance of an object.
+        In addition to the EPP command elements described in an object mapping like <xref target="RFC5733"/>, the command MUST contain a
+        child <xref target="eaiElement">&lt;eai:eai&gt; element</xref> for the client to be set or unset an alternate email.
+        If the alternate email does not apply to the object, the server MUST return an EPP error result code of 2201.</t>
+
+        <t>The following is an example &lt;update&gt; command to set a contact object with an alternate ASCII email:</t>
+        <figure>
+             <name>Example &lt;update&gt; command to set a contact object with an alternate ASCII email</name>
+
+             <sourcecode type="xml" markers="false"><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C: <command>
+C:   <update>
+C:     <contact:update
+C:      xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+C:       <contact:id>sh8013</contact:id>
+C:     </contact:update>
+C:   </update>
+C:   <extension>
+C:     <eai:eai
+C:      xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0">
+C:       <eai:email>jdoe@example.com</eai:email>
+C:     </eai:eai>
+C:   </extension>
+C:   <clTRID>ABC-12345</clTRID>
+C: </command>
+C:</epp>]]></sourcecode>
+        </figure>
+
+        <t>The following is an example &lt;update&gt; command to set a contact object with an alternate SMTPUTF8 email:</t>
+        <figure>
+             <name>Example &lt;update&gt; command to set a contact object with an alternate SMTPUTF8 email</name>
+
+             <sourcecode type="xml" markers="false"><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C: <command>
+C:   <update>
+C:     <contact:update
+C:      xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+C:       <contact:id>sh8013</contact:id>
+C:     </contact:update>
+C:   </update>
+C:   <extension>
+C:     <eai:eai
+C:      xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0">
+C:       <eai:email>麥克風@example.com</eai:email>
+C:     </eai:eai>
+C:   </extension>
+C:   <clTRID>ABC-12345</clTRID>
+C: </command>
+C:</epp>]]></sourcecode>
+        </figure>
+
+        <t>The following is an example &lt;update&gt; command to unset a contact object alternate email:</t>
+        <figure>
+             <name>Example &lt;update&gt; command to unset a contact object alternate email</name>
+
+             <sourcecode type="xml" markers="false"><![CDATA[
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C: <command>
+C:   <update>
+C:     <contact:update
+C:      xmlns:contact="urn:ietf:params:xml:ns:contact-1.0">
+C:       <contact:id>sh8013</contact:id>
+C:     </contact:update>
+C:   </update>
+C:   <extension>
+C:     <eai:eai
+C:      xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0">
+C:       <eai:email/>
+C:     </eai:eai>
+C:   </extension>
+C:   <clTRID>ABC-12345</clTRID>
+C: </command>
+C:</epp>]]></sourcecode>
+        </figure>
+
+
+        <t>This extension does not add any elements to the EPP &lt;create&gt; response described
+        in <xref target="RFC5730"/>.</t>
+
+      </section>
+      <!-- end UPDATE command -->
+
+    </section>
+
+    </section>
+
+    <section anchor="syntax" numbered="true" toc="default">
+      <name>Formal Syntax</name>
+      <t>The EPP SMTPUTF8 Addresses Extension schema is presented here.</t>
+      <t>The formal
+      syntax shown here is a complete XML Schema representation of the object
+      mapping suitable for automated validation of EPP XML instances. The
+      &lt;CODE BEGINS&gt; and &lt;CODE ENDS&gt; tags are not part of the XML Schema; they are used to note the
+      beginning and ending of the XML Schema for URI registration purposes.</t>
+      <section numbered="true" toc="default">
+        <name>SMTPUTF8 Addresses Schema</name>
+<sourcecode type="xml" markers="true"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+  xmlns:eai="urn:ietf:params:xml:ns:epp:eai-1.0"
+  targetNamespace="urn:ietf:params:xml:ns:epp:eai-1.0"
+  elementFormDefault="qualified">
+  <annotation>
+    <documentation>Extensible Provisioning Protocol v1.0
+       SMTPUTF8 Addresses Schema.</documentation>
+  </annotation>
+  <!-- Create, Update, and Info Response extension element -->
+  <element name="eai" type="eai:eaiType" />
+  <!--
+    Single email element that can be empty
+   -->
+  <complexType name="eaiType">
+    <sequence>
+      <element name="email"
+        type="token"/>
+    </sequence>
+  </complexType>
+  <!--
+ End of schema.
+ -->
+</schema>]]></sourcecode>
+      </section>
+    </section>
+
+    <section anchor="eaiTransitionConsiderations" numbered="true" toc="default">
+      <name>SMTPUTF8 Transition Considerations</name>
+      <t>Support for SMTPUTF8 addresses in EPP needs to consider the reality of the usuability issues
+      of SMTUPUTF8 addresses in provisioning transactions and communicating with the parties, such as contacts
+      and organizations.  To address the reality of usuability issues, this section includes considerations for
+      the servers and clients with supporting SMTPUTP8 in EPP:</t>
+      <ol spacing="normal" type="1">
+        <li>Servers SHOULD implement a transition period by supporting the provisioning of an alternate email, as defined in <xref target="commands"/>, where
+            at least one of the email values MUST be an ASCII address.  If an ASCII address is not provided during the transition period,
+            the server MUST return an EPP result code of 2308 "Data management policy violation".</li>
+        <li>Servers SHOULD set the transition period long enough for authorized users to effectively communicate using only an SMTPUTF8 address.</li>
+        <li>Servers SHOULD clear the alternate email address after the transition period ends and MUST inform the client of the update with a Change Poll Message, defined in <xref target="RFC8590"/>.</li>
+        <li>Clients MAY collect an alternate ASCII email address beyond the server's transition period.</li>
+      </ol>
+    </section>
+
     <section numbered="true" toc="default">
       <name>IANA Considerations</name>
       <section numbered="true" toc="default">
@@ -203,12 +754,24 @@
         <t> This document uses URNs to describe XML namespaces
    conforming to a registry mechanism described in  <xref target="RFC3688" format="default">RFC 3688</xref>.  The
    following URI assignment should be made by IANA:</t>
-        <t> Registration request for the eai namespace:</t>
-        <artwork name="" type="" align="left" alt=""><![CDATA[
-   URI:  urn:ietf:params:xml:ns:epp:eai-1.0
-   Registrant Contact:  IESG
-   XML:  None.  Namespace URIs do not represent an XML specification.
-]]></artwork>
+   <t>Registration request for the eai namespace:</t>
+   <dl newline="false" spacing="compact">
+     <dt>URI:</dt>
+<dd>urn:ietf:params:xml:ns:epp:eai-1.0</dd>
+     <dt>Registrant Contact:</dt>
+<dd>IESG</dd>
+     <dt>XML:</dt>
+<dd>None. Namespace URIs do not represent an XML specification.</dd>
+   </dl>
+   <t>Registration request for the eai XML Schema:</t>
+   <dl newline="false" spacing="compact">
+     <dt>URI:</dt>
+<dd>urn:ietf:params:xml:schema:epp:eai-1.0</dd>
+     <dt>Registrant Contact:</dt>
+<dd>IESG</dd>
+     <dt>XML:</dt>
+<dd>See the "Formal Syntax" section of this document.</dd>
+   </dl>
       </section>
       <section numbered="true" toc="default">
         <name>EPP Extension Registry</name>
@@ -218,17 +781,24 @@
    (EPP)" registry described in RFC 7451 <xref target="RFC7451" format="default"/>.  The details of the
    registration are as follows:
         </t>
-        <artwork name="" type="" align="left" alt=""><![CDATA[
-   Name of Extension: Use of Internationalized Email Addresses
-                      in EPP protocol
-   Document status:  Standards Track
-   Reference:  TBA
-   Registrant Name and Email Address:  IESG, <iesg@ietf.org>
-   Top-Level Domains(TLDs):  Any
-   IPR Disclosure:  None
-   Status:  Active
-   Notes:  None
-]]></artwork>
+        <dl newline="false" spacing="compact">
+                <dt>Name of Extension:</dt>
+        	<dd>"Use of Internationalized Email Addresses in EPP protocol"</dd>
+                <dt>Document status:</dt>
+        	<dd>Standards Track</dd>
+                <dt>Reference:</dt>
+        	<dd>RFC 8807</dd>
+                <dt>Registrant Name and Email Address:</dt>
+        	<dd>IESG, &lt;iesg@ietf.org&gt;</dd>
+                <dt>Top-Level Domains(TLDs):</dt>
+        	<dd>Any</dd>
+                <dt>IPR Disclosure:</dt>
+        	<dd>None</dd>
+                <dt>Status:</dt>
+        	<dd>Active</dd>
+                <dt>Notes:</dt>
+        	<dd>None</dd>
+        	</dl>
       </section>
     </section>
     <section anchor="Implementation" numbered="true" toc="default">
@@ -373,6 +943,7 @@
 &RFC6531;
 &RFC6532;
 &RFC7942;
+&RFC8590;
         <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
           <front>
             <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
@@ -567,6 +1138,12 @@
 <ol spacing="normal" type="1">
   <li>Document removed the definition of the concept of a functional extension and updated to use a command-response extension, based on the feedback from John C Klensin.</li>
   <li>Document removed the EAI abbreviation and uses SMTPUTF8 as umbrella term instead, based on the feedback from John C Klensin.</li>
+      </ol>
+    </section>
+    <section anchor="change-ietf-16-to-ietf-17" numbered="true" toc="default">
+      <name>Change from the regext 16 to regext 17 version</name>
+<ol spacing="normal" type="1">
+  <li>Added support for an alternate email during a transition period, based on feedback from John C Klensin.</li>
       </ol>
     </section>
   </section>
