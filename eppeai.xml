@@ -11,14 +11,14 @@
 <!ENTITY RFC6532 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6532.xml">
 <!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-18"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-regext-epp-eai-19"
   category="std" ipr="trust200902" obsoletes="" updates=""
   submissionType="IETF" xml:lang="en" symRefs="true" sortRefs="false"
   tocInclude="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.47.0 -->
   <front>
     <title abbrev="Use of SMTPUTF8 addresses in EPP">Use of Internationalized Email Addresses in the Extensible Provisioning Protocol (EPP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-18"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-regext-epp-eai-19"/>
     <author fullname="Dmitry Belyavskiy" initials="D." surname="Belyavskiy">
       <address>
         <postal>
@@ -195,7 +195,18 @@
         </section>
       </section>
     </section>
-
+    <section numbered="true" toc="default">
+      <name>Alternate Communication Considerations</name>
+      <t><xref target="RFC6530" format="default">RFC 6530</xref> specifies 
+      "message-originating systems SHOULD be prepared to either send conventional envelopes and message headers or to return the message to the originating user so the message may be manually downgraded to the traditional form" along 
+      with "Of course, such transformations imply that the originating user or system must have ASCII-only addresses available for all senders and recipients.  
+      Mechanisms by which such addresses may be found or identified are outside the scope of these specifications as are decisions about the design of originating systems".  
+      This implies that adding support for SMTPUTF8 in EPP includes the need for an alternate form of communication in event of SMTPUTF8 communication errors.  
+      Having alternate forms of communication is the responsibility of server policy on a per EPP extension basis. The two known EPP extension RFCs that have email addresses, 
+      that include <xref target="RFC5733" format="default">RFC 5733</xref> and <xref target="RFC8543" format="default">RFC 8543</xref>, support alternate forms of communication 
+      in the form of postal address, voice telephone number, and facsimile telephone number.  Use of an alternate ASCII email address can be used by an EPP extension.  
+      Servers that do support this extension SHOULD ensure that there are available alternate communication methods for supported EPP extensions with email addresses.</t>
+    </section>
     <section numbered="true" toc="default">
       <name>IANA Considerations</name>
       <section numbered="true" toc="default">
@@ -602,6 +613,12 @@
   <li>Roll back to approach in -16 with the Cardinality of One Option, posted to and supported on the mailing list.</li>
   <li>Replaced references of eai to smtputf8, based on feedback from John C Klensin.</li>
   <li>Revised the Security Considerations section based on feedback and text from Andy Newton.</li>
+      </ol>
+    </section>
+    <section anchor="change-ietf-18-to-ietf-19" numbered="true" toc="default">
+      <name>Change from the regext 18 to regext 19 version</name>
+<ol spacing="normal" type="1">
+  <li>Added the "Alternate Communication Consierations" section to cover considerations when SMTPUTF8 communication fails.</li>
       </ol>
     </section>
   </section>
